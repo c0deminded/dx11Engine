@@ -1,5 +1,2 @@
 ﻿  graphicsclass.cpp
-  main.cpp
-  systemclass.cpp
-  Создание кода...
-  Engine.vcxproj -> D:\projects\Engine\x64\Debug\Engine.exe
+  Engine.vcxproj -> D:\projects\dx11Engine\Engine\x64\Debug\Engine.exe
