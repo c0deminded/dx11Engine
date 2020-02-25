@@ -3,6 +3,7 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include "primitiveclass.h"
 using namespace DirectX;
 
 //geo encapsulated
@@ -16,11 +17,12 @@ private:
 	};
 	struct Transform
 	{
-		XMVECTOR position;
+		XMFLOAT3 position;
+		XMFLOAT3 scale;
 	};
 public:
 	ModelClass();
-	ModelClass(XMFLOAT3* initialPos, int id);
+	ModelClass(XMFLOAT3* initialPos, PrimitiveType type, XMFLOAT3 scale);
 	ModelClass(const ModelClass&);
 	~ModelClass();
 	bool Initialize(ID3D11Device*);
@@ -28,6 +30,7 @@ public:
 	void Frame();
 	void Render(ID3D11DeviceContext*);
 	void Translate(/*ID3D11DeviceContext* deviceContext,*/XMFLOAT3 direction, float distance);
+	bool Intersects(ModelClass* other);
 
 	int GetIndexCount();
 
@@ -47,7 +50,7 @@ public:
 	VertexType* vertices;
 	Transform* transform;
 	XMFLOAT3* initialPos;
+	PrimitiveType meshType;
 	ID3D11DeviceContext* deviceContext;
-	int m_id;
 };
 #endif

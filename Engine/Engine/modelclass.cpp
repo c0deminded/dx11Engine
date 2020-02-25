@@ -1,5 +1,4 @@
 #include "modelclass.h"
-#include "primitiveclass.h"
 
 ModelClass::ModelClass()
 {
@@ -8,11 +7,14 @@ ModelClass::ModelClass()
 	initialPos = new XMFLOAT3(0.f,0.f,0.f);
 }
 
-ModelClass::ModelClass(XMFLOAT3* initialPos,int id)
+ModelClass::ModelClass(XMFLOAT3* initialPos, PrimitiveType type, XMFLOAT3 scale)
 {
 	ModelClass();
+	this->transform = new Transform();
+	this->transform->position = (*initialPos);
+	this->transform->scale = scale;
 	this->initialPos = initialPos;
-	this ->m_id = id;
+	this->meshType = type;
 }
 
 
@@ -52,8 +54,23 @@ void ModelClass::Translate(XMFLOAT3 direction, float distance)
 		vertices[i].position.y += offset.y;
 		vertices[i].position.z += offset.z;
 	}
+	transform->position.x += offset.x;
+	transform->position.y += offset.y;
+	transform->position.z += offset.z;
 	vertexData.pSysMem = vertices;
 	device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer); // <--- memory leak!
+}
+
+bool ModelClass::Intersects(ModelClass* other)
+{
+	if (transform->position.x < (*other).transform->position.x + (*other).transform->scale.x &&
+		transform->position.x + transform->scale.x >(*other).transform->position.x&&
+		transform->position.y < (*other).transform->position.y + (*other).transform->scale.y &&
+		transform->position.y + transform->scale.y >(*other).transform->position.y)
+	{
+		return true;
+	}
+	return false;
 }
 
 //The Shutdown function will call the shutdown functions for the vertex and index buffers.
@@ -101,11 +118,11 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	D3D11_BUFFER_DESC indexBufferDesc;
 	D3D11_SUBRESOURCE_DATA indexData;
 	HRESULT result;
-	transform = new Transform();
-	transform->position = XMVectorZero();
-	PrimitiveClass primitive = PrimitiveClass(PrimitiveType::Rectangle);
+
+	PrimitiveClass primitive = PrimitiveClass(meshType);
 	primitive.SetPosition((*initialPos).x, (*initialPos).y, (*initialPos).z);
-	primitive.Rescale(0.75f, 5.0f, 0.0f); //hardcode
+	primitive.Rescale(transform->scale.x, transform->scale.y, transform->scale.z);
+	//primitive.Rescale(0.75f, 5.0f, 0.0f); //hardcode
 	
 	// Set the number of vertices in the vertex array.
 	m_vertexCount = primitive.vertexCount;
@@ -230,6 +247,7 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* ddeviceContext)
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+	// Render the triangle.
+	deviceContext->DrawIndexed(m_indexCount, 0, 0);
 	return;
 }

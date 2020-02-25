@@ -6,6 +6,7 @@
 #include "modelclass.h"
 #include "colorshaderclass.h"
 
+
 const bool FULL_SCREEN = false;
 const bool VSYNC_ENABLED = true;
 const float SCREEN_DEPTH = 1000.0f;
@@ -28,6 +29,7 @@ private:
 	CameraClass* m_Camera;
 	ModelClass* m_BarLeft;
 	ModelClass* m_BarRight;
+	ModelClass* m_Ball;
 	ColorShaderClass* m_ColorShader;
 };
 #endif

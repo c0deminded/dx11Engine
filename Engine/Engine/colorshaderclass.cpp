@@ -300,10 +300,6 @@ void ColorShaderClass::RenderShader(ID3D11DeviceContext* deviceContext, int inde
 	// Set the vertex and pixel shaders that will be used to render this triangle.
 	deviceContext->VSSetShader(m_vertexShader, NULL, 0);
 	deviceContext->PSSetShader(m_pixelShader, NULL, 0);
-
-	// Render the triangle.
-	deviceContext->DrawIndexed(indexCount, 0, 0);
-
 	return;
 }
 

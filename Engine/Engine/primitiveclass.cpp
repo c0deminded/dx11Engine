@@ -62,10 +62,10 @@ void PrimitiveClass::BuildRectangle()
 	this->vertexCount = 4;
 	this->indexCount = 6;
 	vertices = new Vertices[vertexCount];
-	vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
-	vertices[1].position = XMFLOAT3(-1.0f, 1.0f, 0.0f);
-	vertices[2].position = XMFLOAT3(1.0f, 1.0f, 0.0f);
-	vertices[3].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
+	vertices[0].position = XMFLOAT3(-0.5f, -0.5f, 0.0f);
+	vertices[1].position = XMFLOAT3(-0.5f, 0.5f, 0.0f);
+	vertices[2].position = XMFLOAT3(0.5f, 0.5f, 0.0f);
+	vertices[3].position = XMFLOAT3(0.5f, -0.5f, 0.0f);
 	for (size_t i = 0; i < vertexCount; i++)
 	{
 		vertices[i].color = XMFLOAT4(0.1f, 1.0f, 0.1f, 1.0f);

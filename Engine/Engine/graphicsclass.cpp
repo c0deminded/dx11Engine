@@ -1,11 +1,12 @@
 #include "graphicsclass.h"
-
+#include "primitiveclass.h"
 GraphicsClass::GraphicsClass()
 {
 	m_D3D = 0;
 	m_Camera = 0;
 	m_BarLeft = 0;
 	m_BarRight = 0;
+	m_Ball = 0;
 	m_ColorShader = 0;
 }
 
@@ -50,14 +51,20 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Camera->SetPosition(0.0f, 0.0f, -20.0f);
 
 	// Create the left bar.
-	m_BarLeft = new ModelClass(new XMFLOAT3(-50.f,0.f,0.f),0);
+	m_BarLeft = new ModelClass(new XMFLOAT3(-25.f,0.f,0.f),PrimitiveType::Rectangle, XMFLOAT3(1.5f, 10.0f, 0.0f));
 	if (!m_BarLeft)
 	{
 		return false;
 	}
 	// Create the right bar.
-	m_BarRight = new ModelClass(new XMFLOAT3(50.f, 0.f, 0.f),1);
-	if (!m_BarLeft)
+	m_BarRight = new ModelClass(new XMFLOAT3(25.f, 0.f, 0.f), PrimitiveType::Rectangle, XMFLOAT3(1.5f, 10.0f, 0.0f));
+	if (!m_BarRight)
+	{
+		return false;
+	}
+	// Create the ball.
+	m_Ball = new ModelClass(new XMFLOAT3(0.0f, 0.0f, 0.0f), PrimitiveType::Hexagon,XMFLOAT3(1.0f,1.0f,1.0f));
+	if (!m_Ball)
 	{
 		return false;
 	}
@@ -65,9 +72,10 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// Initialize the left bar.
 	result = m_BarLeft->Initialize(m_D3D->GetDevice());
 	result = m_BarRight->Initialize(m_D3D->GetDevice());
+	result = m_Ball->Initialize(m_D3D->GetDevice());
 	if (!result)
 	{
-		MessageBox(hwnd, L"Could not initialize at least one bar(pong).", L"Error", MB_OK);
+		MessageBox(hwnd, L"Could not initialize at least one model(pong).", L"Error", MB_OK);
 		return false;
 	}
 
@@ -113,6 +121,12 @@ void GraphicsClass::Shutdown()
 		delete m_BarRight;
 		m_BarRight = 0;
 	}
+	if (m_Ball)
+	{
+		m_Ball->Shutdown();
+		delete m_Ball;
+		m_Ball = 0;
+	}
 	// Release the camera object.
 	if (m_Camera)
 	{
@@ -128,19 +142,19 @@ void GraphicsClass::Shutdown()
 	return;
 }
 
-
-bool GraphicsClass::Frame(int axisL,int axisR)
+//perform update
+bool GraphicsClass::Frame(int axisL, int axisR)
 {
 	bool result;
 	// Set the location of the model!!! but how?.
 	//m_Model->/*GetIndexCount(mouseX, mouseY, m_D3D->GetDeviceContext());*/
-	
-	result = true; 
+
+	result = true;
 	if (!result)
 	{
 		return false;
 	}
-	if (axisL != 0) 
+	if (axisL != 0)
 	{
 		m_BarLeft->Translate(XMFLOAT3(0.0f, float(axisL), 0.0f), 0.5f);
 	}
@@ -148,6 +162,17 @@ bool GraphicsClass::Frame(int axisL,int axisR)
 	{
 		m_BarRight->Translate(XMFLOAT3(0.0f, float(axisR), 0.0f), 0.5f);
 	}
+	float xDir = 1.0f;
+	//check intersection && translate
+	if (m_BarRight->Intersects(m_Ball) && xDir != -1.f)
+	{
+		xDir = -1.0f;
+	}
+	if (m_BarLeft->Intersects(m_Ball) && xDir != 1.f)
+	{
+		xDir = 1.0f;
+	}
+	m_Ball->Translate(XMFLOAT3(xDir, 0.0f, 0.0f), 0.4f);
 	// Set the position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -75.0f);
 
@@ -175,6 +200,7 @@ bool GraphicsClass::Render()
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	m_BarLeft->Render(m_D3D->GetDeviceContext());
 	m_BarRight->Render(m_D3D->GetDeviceContext());
+	m_Ball->Render(m_D3D->GetDeviceContext());
 
 	// Render the model using the color shader.
 	result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_BarLeft->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);
