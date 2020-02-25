@@ -19,6 +19,8 @@ public:
 	Vertices* vertices;
 	PrimitiveClass(PrimitiveType type);
 	~PrimitiveClass();
+	void Rescale(float x, float y, float z);
+	void SetPosition(float x,float y, float z);
 private :
 	void BuildTriangle();
 	void BuildRectangle();

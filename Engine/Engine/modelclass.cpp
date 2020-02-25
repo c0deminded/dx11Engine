@@ -5,6 +5,14 @@ ModelClass::ModelClass()
 {
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
+	initialPos = new XMFLOAT3(0.f,0.f,0.f);
+}
+
+ModelClass::ModelClass(XMFLOAT3* initialPos,int id)
+{
+	ModelClass();
+	this->initialPos = initialPos;
+	this ->m_id = id;
 }
 
 
@@ -22,20 +30,33 @@ ModelClass::~ModelClass()
 bool ModelClass::Initialize(ID3D11Device * device)
 {
 	bool result;
-
-
 	// Initialize the vertex and index buffer that hold the geometry for the triangle.
 	result = InitializeBuffers(device);
 	if (!result)
 	{
 		return false;
 	}
-
 	return true;
 }
 
-//The Shutdown function will call the shutdown functions for the vertexand index buffers.
+void ModelClass::Translate(XMFLOAT3 direction, float distance)
+{
+	XMVECTOR v_offset = XMLoadFloat3(&direction) * distance;
+	//now transform position stores real position of it's model
+	// add it to all vertices
+	XMFLOAT3 offset;
+	XMStoreFloat3(&offset, v_offset);
+	for (size_t i = 0; i < m_vertexCount; i++)
+	{
+		vertices[i].position.x += offset.x;
+		vertices[i].position.y += offset.y;
+		vertices[i].position.z += offset.z;
+	}
+	vertexData.pSysMem = vertices;
+	device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer); // <--- memory leak!
+}
 
+//The Shutdown function will call the shutdown functions for the vertex and index buffers.
 void ModelClass::Shutdown()
 {
 	// Release the vertex and index buffers.
@@ -44,12 +65,18 @@ void ModelClass::Shutdown()
 	return;
 }
 
+void ModelClass::Frame()
+{
+	//update vertex buffer
+}
+
 //Render is called from the GraphicsClass::Render function.
 //This function calls RenderBuffers to put the vertexand index buffers on 
 //the graphics pipeline so the color shader will be able to render them.
 
 void ModelClass::Render(ID3D11DeviceContext* deviceContext)
 {
+	Frame();
 	// Put the vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	RenderBuffers(deviceContext);
 
@@ -68,15 +95,18 @@ int ModelClass::GetIndexCount()
 //Usually you would read in a modeland create the buffers from that data file.
 //For this tutorial we will just set the points in the vertexand index buffer manually since it is only a single triangle.
 
-bool ModelClass::InitializeBuffers(ID3D11Device* device)
+bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 {
-	VertexType* vertices;
-	unsigned long* indices;
-	D3D11_BUFFER_DESC vertexBufferDesc, indexBufferDesc;
-	D3D11_SUBRESOURCE_DATA vertexData, indexData;
+	this->device = d11device;
+	D3D11_BUFFER_DESC indexBufferDesc;
+	D3D11_SUBRESOURCE_DATA indexData;
 	HRESULT result;
-
-	PrimitiveClass primitive = PrimitiveClass(PrimitiveType::Hexagon);
+	transform = new Transform();
+	transform->position = XMVectorZero();
+	PrimitiveClass primitive = PrimitiveClass(PrimitiveType::Rectangle);
+	primitive.SetPosition((*initialPos).x, (*initialPos).y, (*initialPos).z);
+	primitive.Rescale(0.75f, 5.0f, 0.0f); //hardcode
+	
 	// Set the number of vertices in the vertex array.
 	m_vertexCount = primitive.vertexCount;
 
@@ -148,8 +178,11 @@ bool ModelClass::InitializeBuffers(ID3D11Device* device)
 	}
 
 	// Release the arrays now that the vertex and index buffers have been created and loaded.
-	delete[] vertices;
-	vertices = 0;
+	/*delete[] vertices;
+	vertices = 0;*/
+
+	delete[] initialPos;
+	initialPos = 0;
 
 	delete[] indices;
 	indices = 0;
@@ -176,8 +209,13 @@ void ModelClass::ShutdownBuffers()
 	return;
 }
 
-void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
+void ModelClass::RenderBuffers(ID3D11DeviceContext* ddeviceContext)
 {
+	if (!deviceContext) 
+	{
+		this->deviceContext = ddeviceContext;
+	}
+
 	unsigned int stride;
 	unsigned int offset;
 
@@ -188,10 +226,8 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* deviceContext)
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
-
 	// Set the index buffer to active in the input assembler so it can be rendered.
 	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
-
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

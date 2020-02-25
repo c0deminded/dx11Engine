@@ -19,6 +19,26 @@ PrimitiveClass::~PrimitiveClass()
 {
 }
 
+void PrimitiveClass::Rescale(float x, float y, float z)
+{
+	for (size_t i = 0; i < vertexCount; i++)
+	{
+		vertices[i].position.x *= x;
+		vertices[i].position.y *= y;
+		vertices[i].position.z *= z;
+	}
+}
+
+void PrimitiveClass::SetPosition(float x, float y, float z)
+{
+	for (size_t i = 0; i < vertexCount; i++)
+	{
+		vertices[i].position.x += x;
+		vertices[i].position.y += y;
+		vertices[i].position.z += z;
+	}
+}
+
 void PrimitiveClass::BuildTriangle()
 {
 	this->vertexCount = 3;

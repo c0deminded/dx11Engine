@@ -20,16 +20,14 @@ public:
 
 	bool Initialize(int, int, HWND);
 	void Shutdown();
-	bool Frame();
-
-private:
+	bool Frame(int,int);
 	bool Render();
 
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
-	ModelClass* m_Model;
+	ModelClass* m_BarLeft;
+	ModelClass* m_BarRight;
 	ColorShaderClass* m_ColorShader;
 };
-
 #endif
