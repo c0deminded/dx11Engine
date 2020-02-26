@@ -30,6 +30,7 @@ public:
 	void Frame();
 	void Render(ID3D11DeviceContext*);
 	void Translate(/*ID3D11DeviceContext* deviceContext,*/XMFLOAT3 direction, float distance);
+	void SetPosition(XMFLOAT3 newPos);
 	bool Intersects(ModelClass* other);
 
 	int GetIndexCount();
@@ -48,6 +49,7 @@ public:
 	int m_vertexCount, m_indexCount;
 	unsigned long* indices;
 	VertexType* vertices;
+	XMFLOAT3* origin;
 	Transform* transform;
 	XMFLOAT3* initialPos;
 	PrimitiveType meshType;

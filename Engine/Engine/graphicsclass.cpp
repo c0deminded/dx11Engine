@@ -8,6 +8,7 @@ GraphicsClass::GraphicsClass()
 	m_BarRight = 0;
 	m_Ball = 0;
 	m_ColorShader = 0;
+	ballDirection = XMFLOAT3(1.f, 0.f, 0.f);
 }
 
 
@@ -63,11 +64,13 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 	// Create the ball.
-	m_Ball = new ModelClass(new XMFLOAT3(0.0f, 0.0f, 0.0f), PrimitiveType::Hexagon,XMFLOAT3(1.0f,1.0f,1.0f));
+	m_Ball = new ModelClass(new XMFLOAT3(0.0f, 0.0f, 0.0f), PrimitiveType::Rectangle,XMFLOAT3(1.0f,1.0f,1.0f));
 	if (!m_Ball)
 	{
 		return false;
 	}
+
+	
 
 	// Initialize the left bar.
 	result = m_BarLeft->Initialize(m_D3D->GetDevice());
@@ -162,17 +165,22 @@ bool GraphicsClass::Frame(int axisL, int axisR)
 	{
 		m_BarRight->Translate(XMFLOAT3(0.0f, float(axisR), 0.0f), 0.5f);
 	}
-	float xDir = 1.0f;
+
 	//check intersection && translate
-	if (m_BarRight->Intersects(m_Ball) && xDir != -1.f)
+	if (m_BarRight->Intersects(m_Ball))
 	{
-		xDir = -1.0f;
+		ballDirection = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 	}
-	if (m_BarLeft->Intersects(m_Ball) && xDir != 1.f)
+	else if (m_BarLeft->Intersects(m_Ball))
 	{
-		xDir = 1.0f;
+		ballDirection = XMFLOAT3(1.0f, 0.0f, 0.0f);
 	}
-	m_Ball->Translate(XMFLOAT3(xDir, 0.0f, 0.0f), 0.4f);
+	m_Ball->Translate(XMFLOAT3(ballDirection.x, 0.0f, 0.0f), 0.4f);
+	if (m_Ball->transform->position.x > 50.0f ||
+		m_Ball->transform->position.x < -50.0f) 
+	{
+		m_Ball->SetPosition(XMFLOAT3(0.f, 0.f, 0.f));
+	}
 	// Set the position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -75.0f);
 

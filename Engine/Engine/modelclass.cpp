@@ -61,12 +61,28 @@ void ModelClass::Translate(XMFLOAT3 direction, float distance)
 	device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer); // <--- memory leak!
 }
 
+void ModelClass::SetPosition(XMFLOAT3 newPos)
+{
+	for (size_t i = 0; i < m_vertexCount; i++)
+	{
+		vertices[i].position.x = origin[i].x + newPos.x;
+		vertices[i].position.y = origin[i].y + newPos.y;
+		vertices[i].position.z = origin[i].z + newPos.z;
+	}
+	transform->position.x = newPos.x;
+	transform->position.y = newPos.y;
+	transform->position.z = newPos.z;
+
+	vertexData.pSysMem = vertices;
+	device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer); // <--- memory leak!
+}
+
 bool ModelClass::Intersects(ModelClass* other)
 {
-	if (transform->position.x < (*other).transform->position.x + (*other).transform->scale.x &&
-		transform->position.x + transform->scale.x >(*other).transform->position.x&&
-		transform->position.y < (*other).transform->position.y + (*other).transform->scale.y &&
-		transform->position.y + transform->scale.y >(*other).transform->position.y)
+	if (transform->position.x* transform->scale.x < (*other).transform->position.x + ((*other).transform->scale.x) &&
+		transform->position.x* transform->scale.x + (transform->scale.x	) >(*other).transform->position.x &&
+		transform->position.y + transform->scale.y/2 > (*other).transform->position.y &&
+		transform->position.y - transform->scale.y/2 < (*other).transform->position.y)
 	{
 		return true;
 	}
@@ -136,6 +152,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	{
 		return false;
 	}
+	origin = new XMFLOAT3[m_vertexCount];
 
 	// Create the index array.
 	indices = new unsigned long[m_indexCount];
@@ -148,6 +165,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	{
 		vertices[i].position = primitive.vertices[i].position;
 		vertices[i].color = primitive.vertices[i].color;
+		origin[i] = primitive.vertices[i].position;
 	}
 	for (size_t i = 0; i < m_indexCount; i++)
 	{
