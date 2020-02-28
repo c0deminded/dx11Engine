@@ -64,7 +64,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 	// Create the ball.
-	m_Ball = new ModelClass(new XMFLOAT3(0.0f, 0.0f, 0.0f), PrimitiveType::Rectangle,XMFLOAT3(1.0f,1.0f,1.0f));
+	m_Ball = new ModelClass(new XMFLOAT3(0.0f, 0.0f, 0.0f), PrimitiveType::Hexagon,XMFLOAT3(1.0f,1.0f,1.0f));
 	if (!m_Ball)
 	{
 		return false;
@@ -169,13 +169,27 @@ bool GraphicsClass::Frame(int axisL, int axisR)
 	//check intersection && translate
 	if (m_BarRight->Intersects(m_Ball))
 	{
-		ballDirection = XMFLOAT3(-1.0f, 0.0f, 0.0f);
+		XMFLOAT3 ballPos = m_Ball->transform->position;
+		XMFLOAT3 barPos = m_BarRight->transform->position;
+
+		XMFLOAT3 directon = XMFLOAT3(ballPos.x - barPos.x, ballPos.y - barPos.y, 0);
+		float magnitude = sqrt((directon.x * directon.x) + (directon.y * directon.y));
+		directon = XMFLOAT3(directon.x/magnitude,directon.y/magnitude,0);
+		ballDirection = XMFLOAT3(-directon.x, directon.y, 0.0f);
+		
 	}
 	else if (m_BarLeft->Intersects(m_Ball))
 	{
-		ballDirection = XMFLOAT3(1.0f, 0.0f, 0.0f);
+		XMFLOAT3 ballPos = m_Ball->transform->position;
+		XMFLOAT3 barPos = m_BarLeft->transform->position;
+
+		XMFLOAT3 directon = XMFLOAT3(ballPos.x - barPos.x, ballPos.y - barPos.y, 0);
+		float magnitude = sqrt((directon.x * directon.x) + (directon.y * directon.y));
+		directon = XMFLOAT3(directon.x / magnitude, directon.y / magnitude, 0);
+		ballDirection = XMFLOAT3(-directon.x, directon.y, 0.0f);
+		
 	}
-	m_Ball->Translate(XMFLOAT3(ballDirection.x, 0.0f, 0.0f), 0.4f);
+	m_Ball->Translate(XMFLOAT3(ballDirection.x, ballDirection.y, 0.0f), 0.4f);
 	if (m_Ball->transform->position.x > 50.0f ||
 		m_Ball->transform->position.x < -50.0f) 
 	{
