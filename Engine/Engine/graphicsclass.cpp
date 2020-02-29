@@ -7,6 +7,8 @@ GraphicsClass::GraphicsClass()
 	m_BarLeft = 0;
 	m_BarRight = 0;
 	m_Ball = 0;
+	m_BorderUp = 0;
+	m_BorderDown = 0;
 	m_ColorShader = 0;
 	ballDirection = XMFLOAT3(1.f, 0.f, 0.f);
 }
@@ -69,6 +71,18 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	{
 		return false;
 	}
+	// Create the upper border.
+	m_BorderUp = new ModelClass(new XMFLOAT3(0.f, 30.5f, 0.f), PrimitiveType::Rectangle, XMFLOAT3(85.0f, 1.0f, 0.0f));
+	if (!m_BorderUp)
+	{
+		return false;
+	}
+	// Create the lower border.
+	m_BorderDown = new ModelClass(new XMFLOAT3(0.f, -30.5f, 0.f), PrimitiveType::Rectangle, XMFLOAT3(85.0f, 1.0f, 0.0f));
+	if (!m_BorderDown)
+	{
+		return false;
+	}
 
 	
 
@@ -76,6 +90,8 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	result = m_BarLeft->Initialize(m_D3D->GetDevice());
 	result = m_BarRight->Initialize(m_D3D->GetDevice());
 	result = m_Ball->Initialize(m_D3D->GetDevice());
+	result = m_BorderUp->Initialize(m_D3D->GetDevice());
+	result = m_BorderDown->Initialize(m_D3D->GetDevice());
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize at least one model(pong).", L"Error", MB_OK);
@@ -129,6 +145,18 @@ void GraphicsClass::Shutdown()
 		m_Ball->Shutdown();
 		delete m_Ball;
 		m_Ball = 0;
+	}
+	if (m_BorderUp)
+	{
+		m_BorderUp->Shutdown();
+		delete m_BorderUp;
+		m_BorderUp = 0;
+	}
+	if (m_BorderDown)
+	{
+		m_BorderDown->Shutdown();
+		delete m_BorderDown;
+		m_BorderDown = 0;
 	}
 	// Release the camera object.
 	if (m_Camera)
@@ -186,15 +214,20 @@ bool GraphicsClass::Frame(int axisL, int axisR)
 		XMFLOAT3 directon = XMFLOAT3(ballPos.x - barPos.x, ballPos.y - barPos.y, 0);
 		float magnitude = sqrt((directon.x * directon.x) + (directon.y * directon.y));
 		directon = XMFLOAT3(directon.x / magnitude, directon.y / magnitude, 0);
-		ballDirection = XMFLOAT3(-directon.x, directon.y, 0.0f);
-		
+		ballDirection = XMFLOAT3(-directon.x, directon.y, 0.0f);	
 	}
-	m_Ball->Translate(XMFLOAT3(ballDirection.x, ballDirection.y, 0.0f), 0.4f);
+
 	if (m_Ball->transform->position.x > 50.0f ||
 		m_Ball->transform->position.x < -50.0f) 
 	{
 		m_Ball->SetPosition(XMFLOAT3(0.f, 0.f, 0.f));
 	}
+	if (m_Ball->transform->position.y > 29.f ||
+		m_Ball->transform->position.y < -29.f)
+	{
+		ballDirection = XMFLOAT3(ballDirection.x, -ballDirection.y, 0.0f);
+	}
+	m_Ball->Translate(XMFLOAT3(ballDirection.x, ballDirection.y, 0.0f), 0.4f);
 	// Set the position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -75.0f);
 
@@ -223,6 +256,8 @@ bool GraphicsClass::Render()
 	m_BarLeft->Render(m_D3D->GetDeviceContext());
 	m_BarRight->Render(m_D3D->GetDeviceContext());
 	m_Ball->Render(m_D3D->GetDeviceContext());
+	m_BorderUp->Render(m_D3D->GetDeviceContext());
+	m_BorderDown->Render(m_D3D->GetDeviceContext());
 
 	// Render the model using the color shader.
 	result = m_ColorShader->Render(m_D3D->GetDeviceContext(), m_BarLeft->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix);

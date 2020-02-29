@@ -30,6 +30,8 @@ private:
 	ModelClass* m_BarLeft;
 	ModelClass* m_BarRight;
 	ModelClass* m_Ball;
+	ModelClass* m_BorderUp;
+	ModelClass* m_BorderDown;
 	XMFLOAT3 ballDirection;
 	ColorShaderClass* m_ColorShader;
 };
