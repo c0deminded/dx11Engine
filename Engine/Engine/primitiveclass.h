@@ -11,13 +11,14 @@ class PrimitiveClass
 public: 
 	int vertexCount, indexCount;
 	unsigned long* indices;
+	XMFLOAT4 meshColor;
 	struct Vertices
 	{
 		XMFLOAT3 position;
 		XMFLOAT4 color;
 	};
 	Vertices* vertices;
-	PrimitiveClass(PrimitiveType type);
+	PrimitiveClass(PrimitiveType type, XMFLOAT4 color);
 	~PrimitiveClass();
 	void Rescale(float x, float y, float z);
 	void SetPosition(float x,float y, float z);

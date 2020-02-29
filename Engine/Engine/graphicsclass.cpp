@@ -54,31 +54,36 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	m_Camera->SetPosition(0.0f, 0.0f, -20.0f);
 
 	// Create the left bar.
-	m_BarLeft = new ModelClass(new XMFLOAT3(-25.f,0.f,0.f),PrimitiveType::Rectangle, XMFLOAT3(1.5f, 10.0f, 0.0f));
+	m_BarLeft = new ModelClass(new XMFLOAT3(-25.f,0.f,0.f),PrimitiveType::Rectangle,
+		XMFLOAT4(0.1f,0.9f,0.1f,1.0f), XMFLOAT3(1.5f, 10.0f, 0.0f));
 	if (!m_BarLeft)
 	{
 		return false;
 	}
 	// Create the right bar.
-	m_BarRight = new ModelClass(new XMFLOAT3(25.f, 0.f, 0.f), PrimitiveType::Rectangle, XMFLOAT3(1.5f, 10.0f, 0.0f));
+	m_BarRight = new ModelClass(new XMFLOAT3(25.f, 0.f, 0.f), PrimitiveType::Rectangle,
+		XMFLOAT4(0.1f, 0.9f, 0.1f, 1.0f), XMFLOAT3(1.5f, 10.0f, 0.0f));
 	if (!m_BarRight)
 	{
 		return false;
 	}
 	// Create the ball.
-	m_Ball = new ModelClass(new XMFLOAT3(0.0f, 0.0f, 0.0f), PrimitiveType::Hexagon,XMFLOAT3(1.0f,1.0f,1.0f));
+	m_Ball = new ModelClass(new XMFLOAT3(0.0f, 0.0f, 0.0f), PrimitiveType::Hexagon,
+		XMFLOAT4(0.9f, 0.1f, 0.1f, 1.0f),XMFLOAT3(1.0f,1.0f,1.0f));
 	if (!m_Ball)
 	{
 		return false;
 	}
 	// Create the upper border.
-	m_BorderUp = new ModelClass(new XMFLOAT3(0.f, 30.5f, 0.f), PrimitiveType::Rectangle, XMFLOAT3(85.0f, 1.0f, 0.0f));
+	m_BorderUp = new ModelClass(new XMFLOAT3(0.f, 30.5f, 0.f), PrimitiveType::Rectangle,
+		XMFLOAT4(0.5f, 0.9f, 0.5f, 1.0f), XMFLOAT3(85.0f, 1.0f, 0.0f));
 	if (!m_BorderUp)
 	{
 		return false;
 	}
 	// Create the lower border.
-	m_BorderDown = new ModelClass(new XMFLOAT3(0.f, -30.5f, 0.f), PrimitiveType::Rectangle, XMFLOAT3(85.0f, 1.0f, 0.0f));
+	m_BorderDown = new ModelClass(new XMFLOAT3(0.f, -30.5f, 0.f), PrimitiveType::Rectangle,
+		XMFLOAT4(0.5f, 0.9f, 0.5f, 1.0f),XMFLOAT3(85.0f, 1.0f, 0.0f));
 	if (!m_BorderDown)
 	{
 		return false;

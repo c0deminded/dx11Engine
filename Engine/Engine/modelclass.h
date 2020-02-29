@@ -22,7 +22,7 @@ private:
 	};
 public:
 	ModelClass();
-	ModelClass(XMFLOAT3* initialPos, PrimitiveType type, XMFLOAT3 scale);
+	ModelClass(XMFLOAT3* initialPos, PrimitiveType type,XMFLOAT4 color, XMFLOAT3 scale);
 	ModelClass(const ModelClass&);
 	~ModelClass();
 	bool Initialize(ID3D11Device*);
@@ -48,6 +48,7 @@ private:
 public:
 	int m_vertexCount, m_indexCount;
 	unsigned long* indices;
+	XMFLOAT4 modelColor;
 	VertexType* vertices;
 	XMFLOAT3* origin;
 	Transform* transform;

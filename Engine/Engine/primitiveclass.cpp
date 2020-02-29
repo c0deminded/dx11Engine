@@ -1,7 +1,8 @@
 #include "primitiveclass.h"
 
-PrimitiveClass::PrimitiveClass(PrimitiveType type)
+PrimitiveClass::PrimitiveClass(PrimitiveType type, XMFLOAT4 color)
 {
+	meshColor = color;
 	switch (type)
 	{
 	case PrimitiveType::Triangle:BuildTriangle();
@@ -49,7 +50,7 @@ void PrimitiveClass::BuildTriangle()
 	vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
 	for (size_t i = 0; i < vertexCount; i++)
 	{
-		vertices[i].color = XMFLOAT4(0.1f, 1.0f, 0.1f, 1.0f);
+		vertices[i].color = meshColor;
 	}
 	indices = new unsigned long[indexCount];
 	indices[0] = 0;
@@ -68,7 +69,7 @@ void PrimitiveClass::BuildRectangle()
 	vertices[3].position = XMFLOAT3(0.5f, -0.5f, 0.0f);
 	for (size_t i = 0; i < vertexCount; i++)
 	{
-		vertices[i].color = XMFLOAT4(0.1f, 1.0f, 0.1f, 1.0f);
+		vertices[i].color = meshColor;
 	}
 	indices = new unsigned long[indexCount];
 	indices[0] = 0;
@@ -91,7 +92,7 @@ void PrimitiveClass::BuildHexagon()
 	vertices[5].position = XMFLOAT3(-1.f, -0.6f, 0.0f);
 	for (size_t i = 0; i < vertexCount; i++)
 	{
-		vertices[i].color = XMFLOAT4(0.1f, 1.0f, 0.1f, 1.0f);
+		vertices[i].color = meshColor;
 	}
 	indices = new unsigned long[indexCount];
 	indices[0] = 5;	indices[1] = 0; indices[2] = 1;

@@ -7,7 +7,7 @@ ModelClass::ModelClass()
 	initialPos = new XMFLOAT3(0.f,0.f,0.f);
 }
 
-ModelClass::ModelClass(XMFLOAT3* initialPos, PrimitiveType type, XMFLOAT3 scale)
+ModelClass::ModelClass(XMFLOAT3* initialPos, PrimitiveType type,XMFLOAT4 color, XMFLOAT3 scale)
 {
 	ModelClass();
 	this->transform = new Transform();
@@ -15,6 +15,7 @@ ModelClass::ModelClass(XMFLOAT3* initialPos, PrimitiveType type, XMFLOAT3 scale)
 	this->transform->scale = scale;
 	this->initialPos = initialPos;
 	this->meshType = type;
+	this->modelColor = color;
 }
 
 
@@ -135,7 +136,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	D3D11_SUBRESOURCE_DATA indexData;
 	HRESULT result;
 
-	PrimitiveClass primitive = PrimitiveClass(meshType);
+	PrimitiveClass primitive = PrimitiveClass(meshType,modelColor);
 	primitive.SetPosition((*initialPos).x, (*initialPos).y, (*initialPos).z);
 	primitive.Rescale(transform->scale.x, transform->scale.y, transform->scale.z);
 	//primitive.Rescale(0.75f, 5.0f, 0.0f); //hardcode
