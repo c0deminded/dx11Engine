@@ -42,6 +42,12 @@
     <ClCompile Include="primitiveclass.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="textureclass.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="textureshaderclass.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -71,6 +77,12 @@
     <ClInclude Include="primitiveclass.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="textureclass.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="textureshaderclass.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="color.vs">
@@ -79,5 +91,17 @@
     <None Include="color.ps">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="texture.vs">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="texture.ps">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\Владислав\Desktop\brick.tga">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

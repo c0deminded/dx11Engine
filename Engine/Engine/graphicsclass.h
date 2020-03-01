@@ -5,6 +5,7 @@
 #include "cameraclass.h"
 #include "modelclass.h"
 #include "colorshaderclass.h"
+#include "textureshaderclass.h"
 
 
 const bool FULL_SCREEN = false;
@@ -27,12 +28,8 @@ public:
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
-	ModelClass* m_BarLeft;
-	ModelClass* m_BarRight;
-	ModelClass* m_Ball;
-	ModelClass* m_BorderUp;
-	ModelClass* m_BorderDown;
-	XMFLOAT3 ballDirection;
-	ColorShaderClass* m_ColorShader;
+	ModelClass* m_Model;
+	//ColorShaderClass* m_ColorShader;
+	TextureShaderClass* m_TextureShader;
 };
 #endif

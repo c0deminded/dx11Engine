@@ -46,8 +46,12 @@ void PrimitiveClass::BuildTriangle()
 	this->indexCount = 3;
 	vertices = new Vertices[vertexCount];
 	vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
+	vertices[0].texture = XMFLOAT2(0.0f, 1.0f);
 	vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	vertices[1].texture = XMFLOAT2(0.5f, 0.0f);
 	vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
+	vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
+
 	for (size_t i = 0; i < vertexCount; i++)
 	{
 		vertices[i].color = meshColor;

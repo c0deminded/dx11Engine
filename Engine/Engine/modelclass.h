@@ -4,6 +4,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "primitiveclass.h"
+#include "textureclass.h"
 using namespace DirectX;
 
 //geo encapsulated
@@ -13,6 +14,7 @@ private:
 	struct VertexType
 	{
 		XMFLOAT3 position;
+		XMFLOAT2 texture;
 		XMFLOAT4 color;
 	};
 	struct Transform
@@ -22,14 +24,19 @@ private:
 	};
 public:
 	ModelClass();
-	ModelClass(XMFLOAT3* initialPos, PrimitiveType type,XMFLOAT4 color, XMFLOAT3 scale);
+	ModelClass(XMFLOAT3* initialPos, XMFLOAT3 scale);
 	ModelClass(const ModelClass&);
 	~ModelClass();
-	bool Initialize(ID3D11Device*);
+	bool Initialize(ID3D11Device*, LPCWSTR textureFilename);
 	void Shutdown();
 	void Frame();
+
+	ID3D11ShaderResourceView* GetTexture();
+	bool LoadTexture(ID3D11Device*, LPCWSTR);
+	void ReleaseTexture();
+
 	void Render(ID3D11DeviceContext*);
-	void Translate(/*ID3D11DeviceContext* deviceContext,*/XMFLOAT3 direction, float distance);
+	void Translate(XMFLOAT3 direction, float distance);
 	void SetPosition(XMFLOAT3 newPos);
 	bool Intersects(ModelClass* other);
 
@@ -45,15 +52,14 @@ private:
 	ID3D11Device* device;
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	D3D11_SUBRESOURCE_DATA vertexData;
+	TextureClass* m_Texture;
 public:
 	int m_vertexCount, m_indexCount;
 	unsigned long* indices;
 	XMFLOAT4 modelColor;
 	VertexType* vertices;
-	XMFLOAT3* origin;
 	Transform* transform;
 	XMFLOAT3* initialPos;
-	PrimitiveType meshType;
 	ID3D11DeviceContext* deviceContext;
 };
 #endif

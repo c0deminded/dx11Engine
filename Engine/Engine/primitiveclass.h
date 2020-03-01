@@ -15,6 +15,7 @@ public:
 	struct Vertices
 	{
 		XMFLOAT3 position;
+		XMFLOAT2 texture;
 		XMFLOAT4 color;
 	};
 	Vertices* vertices;

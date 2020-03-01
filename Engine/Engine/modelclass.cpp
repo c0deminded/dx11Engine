@@ -4,18 +4,17 @@ ModelClass::ModelClass()
 {
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
+	m_Texture = 0;
 	initialPos = new XMFLOAT3(0.f,0.f,0.f);
 }
 
-ModelClass::ModelClass(XMFLOAT3* initialPos, PrimitiveType type,XMFLOAT4 color, XMFLOAT3 scale)
+ModelClass::ModelClass(XMFLOAT3* initialPos, XMFLOAT3 scale)
 {
 	ModelClass();
 	this->transform = new Transform();
 	this->transform->position = (*initialPos);
 	this->transform->scale = scale;
 	this->initialPos = initialPos;
-	this->meshType = type;
-	this->modelColor = color;
 }
 
 
@@ -30,7 +29,7 @@ ModelClass::~ModelClass()
 
 //The Initialize function will call the initialization functions for the vertexand index buffers.
 
-bool ModelClass::Initialize(ID3D11Device * device)
+bool ModelClass::Initialize(ID3D11Device * device, LPCWSTR textureFilename)
 {
 	bool result;
 	// Initialize the vertex and index buffer that hold the geometry for the triangle.
@@ -39,7 +38,45 @@ bool ModelClass::Initialize(ID3D11Device * device)
 	{
 		return false;
 	}
+	// Load the texture for this model.
+	result = LoadTexture(device, textureFilename);
+	if (!result)
+	{
+		return false;
+	}
 	return true;
+}
+
+bool ModelClass::LoadTexture(ID3D11Device* device, LPCWSTR filename)
+{
+	bool result;
+	// Create the texture object.
+	m_Texture = new TextureClass;
+	if (!m_Texture)
+	{
+		return false;
+	}
+	// Initialize the texture object.
+	result = m_Texture->Initialize(device, filename);
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void ModelClass::ReleaseTexture()
+{
+	// Release the texture object.
+	if (m_Texture)
+	{
+		m_Texture->Shutdown();
+		delete m_Texture;
+		m_Texture = 0;
+	}
+
+	return;
 }
 
 void ModelClass::Translate(XMFLOAT3 direction, float distance)
@@ -64,12 +101,12 @@ void ModelClass::Translate(XMFLOAT3 direction, float distance)
 
 void ModelClass::SetPosition(XMFLOAT3 newPos)
 {
-	for (size_t i = 0; i < m_vertexCount; i++)
-	{
-		vertices[i].position.x = origin[i].x + newPos.x;
-		vertices[i].position.y = origin[i].y + newPos.y;
-		vertices[i].position.z = origin[i].z + newPos.z;
-	}
+	//for (size_t i = 0; i < m_vertexCount; i++)
+	//{
+	//	vertices[i].position.x = origin[i].x + newPos.x;
+	//	vertices[i].position.y = origin[i].y + newPos.y;
+	//	vertices[i].position.z = origin[i].z + newPos.z;
+	//}
 	transform->position.x = newPos.x;
 	transform->position.y = newPos.y;
 	transform->position.z = newPos.z;
@@ -93,6 +130,8 @@ bool ModelClass::Intersects(ModelClass* other)
 //The Shutdown function will call the shutdown functions for the vertex and index buffers.
 void ModelClass::Shutdown()
 {
+	// Release the model texture.
+	ReleaseTexture();
 	// Release the vertex and index buffers.
 	ShutdownBuffers();
 
@@ -125,6 +164,11 @@ int ModelClass::GetIndexCount()
 	return m_indexCount;
 }
 
+ID3D11ShaderResourceView* ModelClass::GetTexture()
+{
+	return m_Texture->GetTexture();
+}
+
 //The InitializeBuffers function is where we handle creating the vertexand index buffers.
 //Usually you would read in a modeland create the buffers from that data file.
 //For this tutorial we will just set the points in the vertexand index buffer manually since it is only a single triangle.
@@ -136,10 +180,9 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	D3D11_SUBRESOURCE_DATA indexData;
 	HRESULT result;
 
-	PrimitiveClass primitive = PrimitiveClass(meshType,modelColor);
+	PrimitiveClass primitive = PrimitiveClass(PrimitiveType::Triangle,modelColor);
 	primitive.SetPosition((*initialPos).x, (*initialPos).y, (*initialPos).z);
 	primitive.Rescale(transform->scale.x, transform->scale.y, transform->scale.z);
-	//primitive.Rescale(0.75f, 5.0f, 0.0f); //hardcode
 	
 	// Set the number of vertices in the vertex array.
 	m_vertexCount = primitive.vertexCount;
@@ -153,7 +196,7 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	{
 		return false;
 	}
-	origin = new XMFLOAT3[m_vertexCount];
+	//origin = new XMFLOAT3[m_vertexCount];
 
 	// Create the index array.
 	indices = new unsigned long[m_indexCount];
@@ -165,8 +208,9 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	for (size_t i = 0; i < m_vertexCount; i++)
 	{
 		vertices[i].position = primitive.vertices[i].position;
+		vertices[i].texture = primitive.vertices[i].texture;
 		vertices[i].color = primitive.vertices[i].color;
-		origin[i] = primitive.vertices[i].position;
+		//origin[i] = primitive.vertices[i].position;
 	}
 	for (size_t i = 0; i < m_indexCount; i++)
 	{
