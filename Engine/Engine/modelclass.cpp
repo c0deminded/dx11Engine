@@ -5,16 +5,15 @@ ModelClass::ModelClass()
 	m_vertexBuffer = 0;
 	m_indexBuffer = 0;
 	m_Texture = 0;
-	initialPos = new XMFLOAT3(0.f,0.f,0.f);
+	m_model = 0;
 }
 
-ModelClass::ModelClass(XMFLOAT3* initialPos, XMFLOAT3 scale)
+ModelClass::ModelClass( XMFLOAT3 scale)
 {
 	ModelClass();
 	this->transform = new Transform();
-	this->transform->position = (*initialPos);
+	this->transform->position = XMFLOAT3(.0f,.0f,.0f);
 	this->transform->scale = scale;
-	this->initialPos = initialPos;
 }
 
 
@@ -29,9 +28,15 @@ ModelClass::~ModelClass()
 
 //The Initialize function will call the initialization functions for the vertexand index buffers.
 
-bool ModelClass::Initialize(ID3D11Device * device, LPCWSTR textureFilename)
+bool ModelClass::Initialize(ID3D11Device * device, LPCWSTR modelFilename, LPCWSTR textureFilename)
 {
 	bool result;
+	// Load in the model data,
+	result = LoadModel(modelFilename);
+	if (!result)
+	{
+		return false;
+	}
 	// Initialize the vertex and index buffer that hold the geometry for the triangle.
 	result = InitializeBuffers(device);
 	if (!result)
@@ -78,53 +83,75 @@ void ModelClass::ReleaseTexture()
 
 	return;
 }
-
-void ModelClass::Translate(XMFLOAT3 direction, float distance)
+bool ModelClass::LoadModel(LPCWSTR filename)
 {
-	XMVECTOR v_offset = XMLoadFloat3(&direction) * distance;
-	//now transform position stores real position of it's model
-	// add it to all vertices
-	XMFLOAT3 offset;
-	XMStoreFloat3(&offset, v_offset);
-	for (size_t i = 0; i < m_vertexCount; i++)
+	ifstream fin;
+	char input;
+	int i;
+
+
+	// Open the model file.
+	fin.open(filename);
+
+	// If it could not open the file then exit.
+	if (fin.fail())
 	{
-		vertices[i].position.x += offset.x;
-		vertices[i].position.y += offset.y;
-		vertices[i].position.z += offset.z;
+		return false;
 	}
-	transform->position.x += offset.x;
-	transform->position.y += offset.y;
-	transform->position.z += offset.z;
-	vertexData.pSysMem = vertices;
-	device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer); // <--- memory leak!
-}
 
-void ModelClass::SetPosition(XMFLOAT3 newPos)
-{
-	//for (size_t i = 0; i < m_vertexCount; i++)
-	//{
-	//	vertices[i].position.x = origin[i].x + newPos.x;
-	//	vertices[i].position.y = origin[i].y + newPos.y;
-	//	vertices[i].position.z = origin[i].z + newPos.z;
-	//}
-	transform->position.x = newPos.x;
-	transform->position.y = newPos.y;
-	transform->position.z = newPos.z;
-
-	vertexData.pSysMem = vertices;
-	device->CreateBuffer(&vertexBufferDesc, &vertexData, &m_vertexBuffer); // <--- memory leak!
-}
-
-bool ModelClass::Intersects(ModelClass* other)
-{
-	if (transform->position.x* transform->scale.x < (*other).transform->position.x + ((*other).transform->scale.x) &&
-		transform->position.x* transform->scale.x + (transform->scale.x	) >(*other).transform->position.x &&
-		transform->position.y + transform->scale.y/2 > (*other).transform->position.y &&
-		transform->position.y - transform->scale.y/2 < (*other).transform->position.y)
+	// Read up to the value of vertex count.
+	fin.get(input);
+	while (input != ':')
 	{
-		return true;
+		fin.get(input);
 	}
-	return false;
+
+	// Read in the vertex count.
+	fin >> m_vertexCount;
+
+	// Set the number of indices to be the same as the vertex count.
+	m_indexCount = m_vertexCount;
+
+	// Create the model using the vertex count that was read in.
+	m_model = new ModelType[m_vertexCount];
+	if (!m_model)
+	{
+		return false;
+	}
+
+	// Read up to the beginning of the data.
+	fin.get(input);
+	while (input != ':')
+	{
+		fin.get(input);
+	}
+	fin.get(input);
+	fin.get(input);
+
+	// Read in the vertex data.
+	for (i = 0; i < m_vertexCount; i++)
+	{
+		fin >> m_model[i].x >> m_model[i].y >> m_model[i].z;
+		fin >> m_model[i].tu >> m_model[i].tv;
+		fin >> m_model[i].nx >> m_model[i].ny >> m_model[i].nz;
+	}
+
+	// Close the model file.
+	fin.close();
+
+	return true;
+}
+//The ReleaseModel function handles deleting the model data array.
+
+void ModelClass::ReleaseModel()
+{
+	if (m_model)
+	{
+		delete[] m_model;
+		m_model = 0;
+	}
+
+	return;
 }
 
 //The Shutdown function will call the shutdown functions for the vertex and index buffers.
@@ -134,7 +161,8 @@ void ModelClass::Shutdown()
 	ReleaseTexture();
 	// Release the vertex and index buffers.
 	ShutdownBuffers();
-
+	// Release the model data.
+	ReleaseModel();
 	return;
 }
 
@@ -180,15 +208,6 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	D3D11_SUBRESOURCE_DATA indexData;
 	HRESULT result;
 
-	PrimitiveClass primitive = PrimitiveClass(PrimitiveType::Triangle,modelColor);
-	primitive.SetPosition((*initialPos).x, (*initialPos).y, (*initialPos).z);
-	primitive.Rescale(transform->scale.x, transform->scale.y, transform->scale.z);
-	
-	// Set the number of vertices in the vertex array.
-	m_vertexCount = primitive.vertexCount;
-
-	// Set the number of indices in the index array.
-	m_indexCount = primitive.indexCount;
 
 	// Create the vertex array.
 	vertices = new VertexType[m_vertexCount];
@@ -196,7 +215,6 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	{
 		return false;
 	}
-	//origin = new XMFLOAT3[m_vertexCount];
 
 	// Create the index array.
 	indices = new unsigned long[m_indexCount];
@@ -205,16 +223,14 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 		return false;
 	}
 
+	//Load the vertex array and index array with data.
 	for (size_t i = 0; i < m_vertexCount; i++)
 	{
-		vertices[i].position = primitive.vertices[i].position;
-		vertices[i].texture = primitive.vertices[i].texture;
-		vertices[i].color = primitive.vertices[i].color;
-		//origin[i] = primitive.vertices[i].position;
-	}
-	for (size_t i = 0; i < m_indexCount; i++)
-	{
-		indices[i] = primitive.indices[i];
+		vertices[i].position = XMFLOAT3(m_model[i].x, m_model[i].y, m_model[i].z);
+		vertices[i].texture = XMFLOAT2(m_model[i].tu, m_model[i].tv);
+		vertices[i].normal = XMFLOAT3(m_model[i].nx, m_model[i].ny, m_model[i].nz);
+
+		indices[i] = i;
 	}
 
 	// Set up the description of the static vertex buffer.
@@ -258,11 +274,8 @@ bool ModelClass::InitializeBuffers(ID3D11Device* d11device)
 	}
 
 	// Release the arrays now that the vertex and index buffers have been created and loaded.
-	/*delete[] vertices;
-	vertices = 0;*/
-
-	delete[] initialPos;
-	initialPos = 0;
+	delete[] vertices;
+	vertices = 0;
 
 	delete[] indices;
 	indices = 0;

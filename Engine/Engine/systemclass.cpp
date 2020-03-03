@@ -149,14 +149,6 @@ bool SystemClass::Frame()
 	{
 		return false;
 	}
-
-	// Finally render the graphics to the screen.
-	result = m_Graphics->Render();
-	if (!result)
-	{
-		return false;
-	}
-	return true;
 }
 
 LRESULT CALLBACK SystemClass::MessageHandler(HWND hwnd, UINT umsg, WPARAM wparam, LPARAM lparam)

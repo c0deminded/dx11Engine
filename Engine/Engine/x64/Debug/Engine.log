@@ -1,2 +1,4 @@
-﻿  textureclass.cpp
+﻿  modelclass.cpp
+D:\projects\dx11Engine\Engine\Engine\primitiveclass.h(8,61): warning C4091: static : пропускается слева от "PrimitiveType", когда ни одна переменная не объявлена
+D:\projects\dx11Engine\Engine\Engine\modelclass.cpp(233,17): warning C4267: =: преобразование из "size_t" в "unsigned long"; возможна потеря данных
   Engine.vcxproj -> D:\projects\dx11Engine\Engine\x64\Debug\Engine.exe

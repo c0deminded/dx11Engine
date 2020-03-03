@@ -1,15 +1,12 @@
 #include "primitiveclass.h"
 
-PrimitiveClass::PrimitiveClass(PrimitiveType type, XMFLOAT4 color)
+PrimitiveClass::PrimitiveClass(PrimitiveType type)
 {
-	meshColor = color;
 	switch (type)
 	{
 	case PrimitiveType::Triangle:BuildTriangle();
 		break;
 	case PrimitiveType::Rectangle:BuildRectangle();
-		break;
-	case PrimitiveType::Hexagon:BuildHexagon();
 		break;
 	default:
 		break;
@@ -44,18 +41,20 @@ void PrimitiveClass::BuildTriangle()
 {
 	this->vertexCount = 3;
 	this->indexCount = 3;
-	vertices = new Vertices[vertexCount];
+	vertices = new ModelData[vertexCount];
 	vertices[0].position = XMFLOAT3(-1.0f, -1.0f, 0.0f);
 	vertices[0].texture = XMFLOAT2(0.0f, 1.0f);
+	vertices[0].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
+
 	vertices[1].position = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	vertices[1].texture = XMFLOAT2(0.5f, 0.0f);
+	vertices[1].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
+
 	vertices[2].position = XMFLOAT3(1.0f, -1.0f, 0.0f);
 	vertices[2].texture = XMFLOAT2(1.0f, 1.0f);
+	vertices[2].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 
-	for (size_t i = 0; i < vertexCount; i++)
-	{
-		vertices[i].color = meshColor;
-	}
+
 	indices = new unsigned long[indexCount];
 	indices[0] = 0;
 	indices[1] = 1;
@@ -66,15 +65,12 @@ void PrimitiveClass::BuildRectangle()
 {
 	this->vertexCount = 4;
 	this->indexCount = 6;
-	vertices = new Vertices[vertexCount];
+	vertices = new ModelData[vertexCount];
 	vertices[0].position = XMFLOAT3(-0.5f, -0.5f, 0.0f);
 	vertices[1].position = XMFLOAT3(-0.5f, 0.5f, 0.0f);
 	vertices[2].position = XMFLOAT3(0.5f, 0.5f, 0.0f);
 	vertices[3].position = XMFLOAT3(0.5f, -0.5f, 0.0f);
-	for (size_t i = 0; i < vertexCount; i++)
-	{
-		vertices[i].color = meshColor;
-	}
+
 	indices = new unsigned long[indexCount];
 	indices[0] = 0;
 	indices[1] = 1;
@@ -82,26 +78,5 @@ void PrimitiveClass::BuildRectangle()
 	indices[3] = 2;
 	indices[4] = 3;
 	indices[5] = 0;
-}
-void PrimitiveClass::BuildHexagon()
-{
-	this->vertexCount = 6;
-	this->indexCount = 12;
-	vertices = new Vertices[vertexCount];
-	vertices[0].position = XMFLOAT3(-1.f, 0.6f, 0.0f);
-	vertices[1].position = XMFLOAT3(0.0f, 1.2f, 0.0f);
-	vertices[2].position = XMFLOAT3(1.f, 0.6f, 0.0f);
-	vertices[3].position = XMFLOAT3(1.f, -0.6f, 0.0f);
-	vertices[4].position = XMFLOAT3(0.0f, -1.2f, 0.0f);
-	vertices[5].position = XMFLOAT3(-1.f, -0.6f, 0.0f);
-	for (size_t i = 0; i < vertexCount; i++)
-	{
-		vertices[i].color = meshColor;
-	}
-	indices = new unsigned long[indexCount];
-	indices[0] = 5;	indices[1] = 0; indices[2] = 1;
-	indices[3] = 1; indices[4] = 2; indices[5] = 5;
-	indices[6] = 5;	indices[7] = 2; indices[8] = 4;
-	indices[9] = 4; indices[10] = 2; indices[11] = 3;
 }
 

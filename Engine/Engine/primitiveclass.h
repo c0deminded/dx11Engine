@@ -5,28 +5,25 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 
-static enum class PrimitiveType { Triangle, Rectangle, Hexagon};
+static enum class PrimitiveType { Triangle, Rectangle, Cube};
 class PrimitiveClass 
 {
 public: 
 	int vertexCount, indexCount;
 	unsigned long* indices;
-	XMFLOAT4 meshColor;
-	struct Vertices
+	struct ModelData
 	{
 		XMFLOAT3 position;
 		XMFLOAT2 texture;
-		XMFLOAT4 color;
+		XMFLOAT3 normal;
 	};
-	Vertices* vertices;
-	PrimitiveClass(PrimitiveType type, XMFLOAT4 color);
+	ModelData* vertices;
+	PrimitiveClass(PrimitiveType type);
 	~PrimitiveClass();
 	void Rescale(float x, float y, float z);
 	void SetPosition(float x,float y, float z);
 private :
 	void BuildTriangle();
 	void BuildRectangle();
-	void BuildHexagon();
 };
-
 #endif

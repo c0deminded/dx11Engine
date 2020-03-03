@@ -4,8 +4,9 @@
 #include "d3dclass.h"
 #include "cameraclass.h"
 #include "modelclass.h"
-#include "colorshaderclass.h"
-#include "textureshaderclass.h"
+
+#include "lightshaderclass.h"
+#include "lightclass.h"
 
 
 const bool FULL_SCREEN = false;
@@ -23,13 +24,16 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame(int,int);
-	bool Render();
+
+private:
+	bool Render(float);
 
 private:
 	D3DClass* m_D3D;
 	CameraClass* m_Camera;
 	ModelClass* m_Model;
-	//ColorShaderClass* m_ColorShader;
-	TextureShaderClass* m_TextureShader;
+
+	LightShaderClass* m_LightShader;
+	LightClass* m_Light;
 };
 #endif
