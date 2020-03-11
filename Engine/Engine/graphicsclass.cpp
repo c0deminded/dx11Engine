@@ -5,6 +5,7 @@ GraphicsClass::GraphicsClass()
 	m_D3D = 0;
 	m_Camera = 0;
 	m_Model = 0;
+	m_colorShader = 0;
 	m_LightShader = 0;
 	m_Light = 0;
 }
@@ -47,17 +48,25 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
+	m_Camera->SetPosition(0.0f, 1.0f, -55.0f);
 
+	m_Model = new ModelClass[5];
+
+	for (size_t i = 0; i < 5; i++)
+	{
+		m_Model[i] = ModelClass(XMFLOAT3(0.f, 0.f, 0.f));
+	}
 	// Create the Model.
-	m_Model = new ModelClass(XMFLOAT3(2.f, 2.f, 0.f));
 	if (!m_Model)
 	{
 		return false;
 	}
 	
+	for (size_t i = 0; i < 5; i++)
+	{
+		result = m_Model[i].Initialize(m_D3D->GetDevice(), L"../Engine/cube.txt", L"../Engine/brick.tga");
+	}
 	// Initialize the model.
-	result = m_Model->Initialize(m_D3D->GetDevice(), L"../Engine/cube.txt", L"../Engine/brick.tga");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize model.", L"Error", MB_OK);
@@ -66,6 +75,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass;
+	m_colorShader = new ColorShaderClass;
 	if (!m_LightShader)
 	{
 		return false;
@@ -73,6 +83,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Initialize the light shader object.
 	result = m_LightShader->Initialize(m_D3D->GetDevice(), hwnd);
+	result = m_colorShader->Initialize(m_D3D->GetDevice(), hwnd);
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize the light shader object.", L"Error", MB_OK);
@@ -103,20 +114,25 @@ void GraphicsClass::Shutdown()
 	}
 
 	// Release the light shader object.
-	if (m_LightShader)
+	if (m_LightShader )
 	{
 		m_LightShader->Shutdown();
 		delete m_LightShader;
 		m_LightShader = 0;
 	}
-
+	if (m_colorShader)
+	{
+		m_colorShader->Shutdown();
+		delete m_colorShader;
+		m_colorShader = 0;
+	}
 	// Release the model object.
-	if (m_Model)
+	/*if (m_Model)
 	{
 		m_Model->Shutdown();
 		delete m_Model;
 		m_Model = 0;
-	}
+	}*/
 	// Release the camera object.
 	if (m_Camera)
 	{
@@ -175,14 +191,33 @@ bool GraphicsClass::Render(float rotation)
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	worldMatrix = XMMatrixRotationY(rotation);
+	//worldMatrix = XMMatrixRotationY(rotation);
+	
 	
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_D3D->GetDeviceContext());
 
+	worldMatrix = XMMatrixScaling(4.0f , 4.0f, 4.0f) * XMMatrixTranslation(0.0f , 0.0f, 0.0f) * XMMatrixRotationY(-rotation);
+	m_Model[0].Render(m_D3D->GetDeviceContext());
+	
+	result = m_colorShader->Render(m_D3D->GetDeviceContext(), m_Model[0].GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix);
+
+	XMMATRIX lastPlanetMatrix;
+
+	for (int i = 1; i < 4; i++) {
+	worldMatrix = XMMatrixScaling(0.7f * i, 0.7f * i, 0.7f * i) * XMMatrixTranslation(6.0f * i , 0.0f, 0.0f)/* * XMMatrixRotationY(i * rotation)*/;
+	lastPlanetMatrix = worldMatrix;
+	m_Model[i].Render(m_D3D->GetDeviceContext());
+
+	result = m_colorShader->Render(m_D3D->GetDeviceContext(), m_Model[i].GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix);
+	}
+	worldMatrix =    XMMatrixTranslation(5.0f, 0.0f, 5.0f) * XMMatrixRotationY(-rotation) * lastPlanetMatrix;
+	m_Model[4].Render(m_D3D->GetDeviceContext());
+
+	result = m_colorShader->Render(m_D3D->GetDeviceContext(), m_Model[4].GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix);
 	// Render the model using the light shader.
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
 	if (!result)
 	{
 		return false;

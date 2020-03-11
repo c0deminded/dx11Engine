@@ -304,11 +304,6 @@ void ModelClass::ShutdownBuffers()
 
 void ModelClass::RenderBuffers(ID3D11DeviceContext* ddeviceContext)
 {
-	if (!deviceContext) 
-	{
-		this->deviceContext = ddeviceContext;
-	}
-
 	unsigned int stride;
 	unsigned int offset;
 
@@ -318,12 +313,12 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* ddeviceContext)
 	offset = 0;
 
 	// Set the vertex buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
+	ddeviceContext->IASetVertexBuffers(0, 1, &m_vertexBuffer, &stride, &offset);
 	// Set the index buffer to active in the input assembler so it can be rendered.
-	deviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	ddeviceContext->IASetIndexBuffer(m_indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
-	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	ddeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// Render the triangle.
-	deviceContext->DrawIndexed(m_indexCount, 0, 0);
+	ddeviceContext->DrawIndexed(m_indexCount, 0, 0);
 	return;
 }

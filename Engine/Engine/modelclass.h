@@ -68,6 +68,5 @@ public:
 	unsigned long* indices;
 	VertexType* vertices;
 	Transform* transform;
-	ID3D11DeviceContext* deviceContext;
 };
 #endif
