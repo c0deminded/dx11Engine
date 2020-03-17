@@ -49,6 +49,12 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -10.0f);
 
+<<<<<<< Updated upstream
+=======
+
+
+	m_Model = new ModelClass(XMFLOAT3(0.f, 0.f, 0.f));
+>>>>>>> Stashed changes
 	// Create the Model.
 	m_Model = new ModelClass(XMFLOAT3(2.f, 2.f, 0.f));
 	if (!m_Model)
@@ -56,6 +62,10 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 		return false;
 	}
 	
+<<<<<<< Updated upstream
+=======
+	result = m_Model->Initialize(m_D3D->GetDevice(), L"../Engine/cube.txt", L"../Engine/brick.tga");
+>>>>>>> Stashed changes
 	// Initialize the model.
 	result = m_Model->Initialize(m_D3D->GetDevice(), L"../Engine/cube.txt", L"../Engine/brick.tga");
 	if (!result)
@@ -109,7 +119,10 @@ void GraphicsClass::Shutdown()
 		delete m_LightShader;
 		m_LightShader = 0;
 	}
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 	// Release the model object.
 	if (m_Model)
 	{
@@ -176,9 +189,19 @@ bool GraphicsClass::Render(float rotation)
 
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
 	worldMatrix = XMMatrixRotationY(rotation);
+<<<<<<< Updated upstream
 	
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
 	m_Model->Render(m_D3D->GetDeviceContext());
+=======
+	
+	
+	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
+	m_Model->Render(m_D3D->GetDeviceContext());
+	
+	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix,
+		projectionMatrix, m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+>>>>>>> Stashed changes
 
 	// Render the model using the light shader.
 	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
