@@ -38,7 +38,6 @@ bld/
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
