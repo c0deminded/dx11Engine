@@ -3,7 +3,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "inputclass.h"
-#include "graphicsclass.h"
+#include "Scene.h"
 
 class SystemClass
 {
@@ -29,7 +29,7 @@ private:
 	HWND m_hwnd;
 
 	InputClass* m_Input;
-	GraphicsClass* m_Graphics;
+	Scene* m_Scene;
 };
 
 static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
