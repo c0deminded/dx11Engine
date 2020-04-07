@@ -17,7 +17,7 @@ public:
 	virtual void  Unload();
 	bool Init(int, int, HWND);
 	virtual bool  Update();
-	virtual void  Render();
+	virtual void  Render(float);
 
 private:
 	GraphicsClass* m_Graphics;

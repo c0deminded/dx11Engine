@@ -56,7 +56,7 @@ bool SystemClass::Initialize()
 	{
 		return false;
 	}
-
+	m_Scene->Load();
 	return true;
 }
 
