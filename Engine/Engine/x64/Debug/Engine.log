@@ -1,15 +1,3 @@
 ﻿  Scene.cpp
 D:\projects\dx11Engine\Engine\Engine\primitiveclass.h(8,61): warning C4091: static : пропускается слева от "PrimitiveType", когда ни одна переменная не объявлена
-  graphicsclass.cpp
-D:\projects\dx11Engine\Engine\Engine\primitiveclass.h(8,61): warning C4091: static : пропускается слева от "PrimitiveType", когда ни одна переменная не объявлена
-  main.cpp
-D:\projects\dx11Engine\Engine\Engine\primitiveclass.h(8,61): warning C4091: static : пропускается слева от "PrimitiveType", когда ни одна переменная не объявлена
-  modelclass.cpp
-D:\projects\dx11Engine\Engine\Engine\primitiveclass.h(8,61): warning C4091: static : пропускается слева от "PrimitiveType", когда ни одна переменная не объявлена
-D:\projects\dx11Engine\Engine\Engine\modelclass.cpp(130,34): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-D:\projects\dx11Engine\Engine\Engine\modelclass.cpp(132,22): warning C4018: <: несоответствие типов со знаком и без знака
-  systemclass.cpp
-D:\projects\dx11Engine\Engine\Engine\primitiveclass.h(8,61): warning C4091: static : пропускается слева от "PrimitiveType", когда ни одна переменная не объявлена
-  Создание кода...
-D:\projects\dx11Engine\Engine\Engine\systemclass.cpp(152): warning C4715: SystemClass::Frame: значение возвращается не при всех путях выполнения
   Engine.vcxproj -> D:\projects\dx11Engine\Engine\x64\Debug\Engine.exe

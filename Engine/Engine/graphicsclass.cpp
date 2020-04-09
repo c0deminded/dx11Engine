@@ -4,7 +4,6 @@ GraphicsClass::GraphicsClass()
 {
 	m_D3D = 0;
 	m_Camera = 0;
-	m_Model = 0;
 	m_LightShader = 0;
 	m_Light = 0;
 }
@@ -48,22 +47,7 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 
 	// Set the initial position of the camera.
 	m_Camera->SetPosition(0.0f, 0.0f, -5.0f);
-
-	// Create the Model.
-	m_Model = new ModelClass(XMFLOAT3(1.0f,1.0f,1.0f));
-	if (!m_Model)
-	{
-		return false;
-	}
 	
-	// Initialize the model.
-	result = m_Model->Initialize(m_D3D->GetDevice(), "Data\\Objects\\m_cube.obj", L"../Engine/brick.tga");
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize model.", L"Error", MB_OK);
-		return false;
-	}
-
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass;
 	if (!m_LightShader)
@@ -109,13 +93,6 @@ void GraphicsClass::Shutdown()
 		delete m_LightShader;
 		m_LightShader = 0;
 	}
-	// Release the model object.
-	if (m_Model)
-	{
-		m_Model->Shutdown();
-		delete m_Model;
-		m_Model = 0;
-	}
 	// Release the camera object.
 	if (m_Camera)
 	{
@@ -140,7 +117,7 @@ bool GraphicsClass::Frame(int axisL, int axisR)
 }
 
 
-bool GraphicsClass::Render(float rotation)
+bool GraphicsClass::Render(Gameobject* go)
 {
 	XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
 	bool result;
@@ -158,14 +135,14 @@ bool GraphicsClass::Render(float rotation)
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 
 	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	worldMatrix = XMMatrixRotationY(rotation);
+	worldMatrix = go->m_Transform->trs;
 
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	m_Model->Render(m_D3D->GetDeviceContext());
-	
+	go->m_Model->Render(m_D3D->GetDeviceContext());
 	// Render the model using the light shader.
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+	result = m_LightShader->Render(m_D3D->GetDeviceContext(), go->m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		go->m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+
 	
 	if (!result)
 	{

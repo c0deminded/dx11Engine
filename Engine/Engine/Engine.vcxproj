@@ -141,6 +141,7 @@
     <ClCompile Include="cameraclass.cpp" />
     <ClCompile Include="colorshaderclass.cpp" />
     <ClCompile Include="d3dclass.cpp" />
+    <ClCompile Include="Gameobject.cpp" />
     <ClCompile Include="graphicsclass.cpp" />
     <ClCompile Include="inputclass.cpp" />
     <ClCompile Include="lightclass.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="cameraclass.h" />
     <ClInclude Include="colorshaderclass.h" />
     <ClInclude Include="d3dclass.h" />
+    <ClInclude Include="Gameobject.h" />
     <ClInclude Include="graphicsclass.h" />
     <ClInclude Include="inputclass.h" />
     <ClInclude Include="lightclass.h" />

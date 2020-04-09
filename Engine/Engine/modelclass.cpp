@@ -7,17 +7,10 @@ ModelClass::ModelClass()
 	m_Texture = 0;
 }
 
-ModelClass::ModelClass( XMFLOAT3 scale)
-{
-	ModelClass();
-	this->transform = new Transform();
-	this->transform->position = XMFLOAT3(.0f,.0f,.0f);
-	this->transform->scale = scale;
-}
-
 
 ModelClass::ModelClass(const ModelClass& other)
 {
+	
 }
 
 

@@ -57,6 +57,9 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Gameobject.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="systemclass.h">
@@ -99,6 +102,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Gameobject.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

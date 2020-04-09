@@ -7,6 +7,7 @@
 
 #include "lightshaderclass.h"
 #include "lightclass.h"
+#include "Gameobject.h"
 
 
 const bool FULL_SCREEN = false;
@@ -24,12 +25,11 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame(int,int);
-	bool Render(float);
+	bool Render(Gameobject*);
 
-private:
 	D3DClass* m_D3D;
+private:
 	CameraClass* m_Camera;
-	ModelClass* m_Model;
 
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;

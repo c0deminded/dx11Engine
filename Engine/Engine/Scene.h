@@ -2,6 +2,7 @@
 #define _SCENE_H_
 
 #include "graphicsclass.h"
+#include "Gameobject.h"
 #include <d3d11.h>
 #include <DirectXMath.h>
 
@@ -17,9 +18,10 @@ public:
 	virtual void  Unload();
 	bool Init(int, int, HWND);
 	virtual bool  Update();
-	virtual void  Render(float);
+	virtual void  Render();
 
 private:
 	GraphicsClass* m_Graphics;
+	Gameobject* m_SomeGo;
 };
 #endif

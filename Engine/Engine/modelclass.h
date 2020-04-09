@@ -15,7 +15,7 @@
 using namespace std;
 using namespace DirectX;
 
-//geo encapsulated
+//Primitive mesh class
 class ModelClass
 {
 private:
@@ -27,15 +27,8 @@ private:
 		XMFLOAT2 texture;
 		XMFLOAT3 normal;
 	};
-	struct Transform
-	{
-		XMMATRIX trs;
-		XMFLOAT3 position;
-		XMFLOAT3 scale;
-	};
 public:
 	ModelClass();
-	ModelClass(XMFLOAT3 scale);
 	ModelClass(const ModelClass&);
 	~ModelClass();
 	//bool Initialize(ID3D11Device*, LPCWSTR textureFilename);
@@ -67,7 +60,6 @@ public:
 	int m_vertexCount, m_indexCount;
 	unsigned long* indices;
 	VertexData* vertices;
-	Transform* transform;
 	ID3D11DeviceContext* deviceContext;
 };
 #endif

@@ -1,17 +1,22 @@
 #include "Scene.h"
-#include <assimp/Importer.hpp>
+
+//Scene class to derive from
+
 Scene::Scene()
 {
 	m_Graphics = 0;
+	m_SomeGo = 0;
 }
 
 Scene::~Scene()
 {
 }
 
+//use to load some resources
+//not gameplay objects
 void Scene::Load()
 {
-	
+
 }
 
 void Scene::Unload()
@@ -22,29 +27,36 @@ void Scene::Unload()
 		delete m_Graphics;
 		m_Graphics = 0;
 	}
+	if (m_SomeGo) 
+	{
+		m_SomeGo->Unload();
+		delete m_SomeGo;
+		m_SomeGo = 0;
+	}
 }
 
-bool Scene::Init(int sWidth, int sHeight, HWND m_hwnd)
+//aka start
+bool Scene::Init(int sWidth, int sHeight, HWND hwnd)
 {
+	bool result;
 	m_Graphics = new GraphicsClass;
-	return m_Graphics->Initialize(sWidth, sHeight, m_hwnd);
+	result = m_Graphics->Initialize(sWidth, sHeight, hwnd);
+
+	m_SomeGo = new Gameobject;
+	result = m_SomeGo->Init(hwnd,m_Graphics->m_D3D);
+	return result;
 }
 
 bool Scene::Update()
 {
-	static float rotation = 0.0f;
-
-	// Update the rotation variable each frame.
-	rotation += (float)XM_PI * 0.01f;
-	if (rotation > 360.0f)
-	{
-		rotation -= 360.0f;
-	}
-	Render(rotation);
+	m_SomeGo->Update();
+	Render();
 	return true;
 }
 
-void Scene::Render(float rotation)
+void Scene::Render()
 {
-	m_Graphics->Render(rotation);
+	m_SomeGo->Render();
+	//temporary crutch
+	m_Graphics->Render(m_SomeGo);
 }
