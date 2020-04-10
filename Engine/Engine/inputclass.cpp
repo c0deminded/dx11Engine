@@ -223,32 +223,32 @@ void InputClass::GetMouseLocation(int& mouseX, int& mouseY)
 	return;
 }
 
-void InputClass::GetLRAxisValue(int& axisL, int& axisR)
+void InputClass::GetLRAxisValue(int& axisX, int& axisY)
 {
 	if (m_keyboardState[DIK_UPARROW] & 0x80)
 	{
-		axisR = 1;
+		axisY = 1;
 	}
 	else if (m_keyboardState[DIK_DOWNARROW] & 0x80)
 	{
-		axisR = -1;
+		axisY = -1;
 	}
 	else 
 	{
-		axisR = 0;
+		axisY = 0;
 	}
 
-	if (m_keyboardState[DIK_W] & 0x80)
+	if (m_keyboardState[DIK_LEFTARROW] & 0x80)
 	{
-		axisL = 1;
+		axisX = -1;
 	}
-	else if (m_keyboardState[DIK_S] & 0x80)
+	else if (m_keyboardState[DIK_RIGHTARROW] & 0x80)
 	{
-		axisL = -1;
+		axisX = 1;
 	}
 	else
 	{
-		axisL = 0;
+		axisX = 0;
 	}
 	return;
 }

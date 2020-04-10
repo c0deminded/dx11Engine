@@ -3,10 +3,12 @@
 
 #include "modelclass.h"
 #include "d3dclass.h"
+#include <d3d11.h>
+#include "SimpleMath.h"
 
 using namespace std;
 using namespace DirectX;
-
+using namespace DirectX::SimpleMath;
 class Gameobject 
 {
 public:
@@ -14,7 +16,7 @@ public:
 	~Gameobject();
 	struct Transform
 	{
-		XMMATRIX trs;
+		Matrix trs;
 
 		/*XMFLOAT3 translation;
 		XMFLOAT3 rotation;
@@ -25,12 +27,11 @@ public:
 	virtual void  Unload();
 	virtual bool Init(HWND,D3DClass*);
 	virtual bool  Update();
-	virtual void  Render();
 
-	virtual void SetActive(bool);
-	ModelClass* m_Model;
+	//local transform
 	Transform* m_Transform;
-private:
+	Matrix m_Root;
+protected:
 	D3DClass* m_D3D;
 };
 #endif

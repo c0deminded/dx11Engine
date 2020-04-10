@@ -2,14 +2,14 @@
 #define _SCENE_H_
 
 #include "graphicsclass.h"
-#include "Gameobject.h"
+#include "Katamari.h"
 #include <d3d11.h>
 #include <DirectXMath.h>
 
 using namespace std;
 using namespace DirectX;
 
-class Scene : GraphicsClass {
+class Scene  {
 public:
 	Scene();
 	~Scene();
@@ -17,11 +17,11 @@ public:
 	virtual void Load();
 	virtual void  Unload();
 	bool Init(int, int, HWND);
-	virtual bool  Update();
+	virtual bool  Update(int axisX, int axisY);
 	virtual void  Render();
 
 private:
 	GraphicsClass* m_Graphics;
-	Gameobject* m_SomeGo;
+	Katamari* m_Katamari;
 };
 #endif

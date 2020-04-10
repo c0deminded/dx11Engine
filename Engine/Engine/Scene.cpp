@@ -5,7 +5,7 @@
 Scene::Scene()
 {
 	m_Graphics = 0;
-	m_SomeGo = 0;
+	m_Katamari = 0;
 }
 
 Scene::~Scene()
@@ -16,7 +16,6 @@ Scene::~Scene()
 //not gameplay objects
 void Scene::Load()
 {
-
 }
 
 void Scene::Unload()
@@ -27,11 +26,11 @@ void Scene::Unload()
 		delete m_Graphics;
 		m_Graphics = 0;
 	}
-	if (m_SomeGo) 
+	if (m_Katamari) 
 	{
-		m_SomeGo->Unload();
-		delete m_SomeGo;
-		m_SomeGo = 0;
+		m_Katamari->Unload();
+		delete m_Katamari;
+		m_Katamari = 0;
 	}
 }
 
@@ -42,21 +41,22 @@ bool Scene::Init(int sWidth, int sHeight, HWND hwnd)
 	m_Graphics = new GraphicsClass;
 	result = m_Graphics->Initialize(sWidth, sHeight, hwnd);
 
-	m_SomeGo = new Gameobject;
-	result = m_SomeGo->Init(hwnd,m_Graphics->m_D3D);
+	m_Katamari = new Katamari;
+	result = m_Katamari->Init(hwnd,m_Graphics->m_D3D);
 	return result;
 }
 
-bool Scene::Update()
+bool Scene::Update(int axisX,int axisY)
 {
-	m_SomeGo->Update();
+	if (axisX != 0 || axisY != 0)
+		m_Katamari->Translate(Vector3(axisX, 0.0f, axisY));
+	//m_Katamari->Update();
 	Render();
 	return true;
 }
 
 void Scene::Render()
 {
-	m_SomeGo->Render();
 	//temporary crutch
-	m_Graphics->Render(m_SomeGo);
+	m_Graphics->Render(m_Katamari,m_Katamari->m_Model);
 }

@@ -3,7 +3,6 @@
 
 #include <d3d11.h>
 #include <DirectXMath.h>
-#include "primitiveclass.h"
 #include "textureclass.h"
 #include <fstream>
 

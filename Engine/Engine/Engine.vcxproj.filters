@@ -13,99 +13,135 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\Core">
+      <UniqueIdentifier>{f43535c4-2483-44da-83c8-1cdb15c40538}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Shaders">
+      <UniqueIdentifier>{24eccf11-2c17-4d93-b6ba-a8b1b842749c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Rendering">
+      <UniqueIdentifier>{624f8a26-939f-45e9-9d2e-267565e7e255}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Engine">
+      <UniqueIdentifier>{071a56c6-81c5-45d7-b8b9-4915d89d0931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Core">
+      <UniqueIdentifier>{f35cbd27-ec8b-4119-ae74-d3caccd552b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Engine">
+      <UniqueIdentifier>{e064cf59-8cea-4532-a092-1e5e7219e19b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Rendering">
+      <UniqueIdentifier>{4c59a710-a15c-4d43-9ec6-caef1ffb794f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Shaders">
+      <UniqueIdentifier>{8a2a4df8-419b-4c51-885d-8d953343ab2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Engine\Katamari">
+      <UniqueIdentifier>{5714d90e-c6ef-48a5-987d-caa82fd929c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Engine\Katamari">
+      <UniqueIdentifier>{5195d310-5f53-4435-b81f-80c85e34b169}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="graphicsclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="inputclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="systemclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="d3dclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="modelclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="colorshaderclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="cameraclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="primitiveclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="textureclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="textureshaderclass.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="lightshaderclass.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Core</Filter>
     </ClCompile>
     <ClCompile Include="lightclass.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="systemclass.cpp">
+      <Filter>Исходные файлы\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="textureclass.cpp">
+      <Filter>Исходные файлы\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="modelclass.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="inputclass.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="graphicsclass.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Gameobject.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="cameraclass.cpp">
+      <Filter>Исходные файлы\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="textureshaderclass.cpp">
+      <Filter>Исходные файлы\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="lightshaderclass.cpp">
+      <Filter>Исходные файлы\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="colorshaderclass.cpp">
+      <Filter>Исходные файлы\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="KataVictim.cpp">
+      <Filter>Исходные файлы\Engine\Katamari</Filter>
+    </ClCompile>
+    <ClCompile Include="Katamari.cpp">
+      <Filter>Исходные файлы\Engine\Katamari</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="systemclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="graphicsclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="inputclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="d3dclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="modelclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="colorshaderclass.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Core</Filter>
     </ClInclude>
     <ClInclude Include="cameraclass.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="primitiveclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="textureclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="textureshaderclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="lightshaderclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="lightclass.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="colorshaderclass.h">
+      <Filter>Файлы заголовков\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Gameobject.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="graphicsclass.h">
+      <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="inputclass.h">
+      <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="lightclass.h">
+      <Filter>Файлы заголовков\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="lightshaderclass.h">
+      <Filter>Файлы заголовков\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="modelclass.h">
+      <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Файлы заголовков\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="systemclass.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="textureclass.h">
+      <Filter>Файлы заголовков\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="textureshaderclass.h">
+      <Filter>Файлы заголовков\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Katamari.h">
+      <Filter>Файлы заголовков\Engine\Katamari</Filter>
+    </ClInclude>
+    <ClInclude Include="KataVictim.h">
+      <Filter>Файлы заголовков\Engine\Katamari</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

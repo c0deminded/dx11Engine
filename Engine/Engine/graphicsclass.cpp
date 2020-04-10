@@ -1,5 +1,4 @@
 #include "graphicsclass.h"
-#include "primitiveclass.h"
 GraphicsClass::GraphicsClass()
 {
 	m_D3D = 0;
@@ -46,7 +45,9 @@ bool GraphicsClass::Initialize(int screenWidth, int screenHeight, HWND hwnd)
 	}
 
 	// Set the initial position of the camera.
-	m_Camera->SetPosition(0.0f, 0.0f, -5.0f);
+	m_Camera->SetPosition(0.0f, 5.0f, -25.0f);
+	//rad
+	m_Camera->SetRotation(-1.0f, 0.0f, 0.0f);
 	
 	// Create the light shader object.
 	m_LightShader = new LightShaderClass;
@@ -117,7 +118,7 @@ bool GraphicsClass::Frame(int axisL, int axisR)
 }
 
 
-bool GraphicsClass::Render(Gameobject* go)
+bool GraphicsClass::Render(Gameobject* go,ModelClass* model)
 {
 	XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
 	bool result;
@@ -138,10 +139,10 @@ bool GraphicsClass::Render(Gameobject* go)
 	worldMatrix = go->m_Transform->trs;
 
 	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	go->m_Model->Render(m_D3D->GetDeviceContext());
+	model->Render(m_D3D->GetDeviceContext());
 	// Render the model using the light shader.
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), go->m_Model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		go->m_Model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+	result = m_LightShader->Render(m_D3D->GetDeviceContext(), model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+		model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
 
 	
 	if (!result)
