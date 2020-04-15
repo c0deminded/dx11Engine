@@ -43,25 +43,21 @@ bool Katamari::Init(HWND hwnd, D3DClass* d3d)
 		MessageBox(hwnd, L"Could not initialize model.", L"Error", MB_OK);
 		return false;
 	}
-	/*m_Root = XMMatrixTranslation(5.0f, 0.0f, 0.0f);
-	m_Transform->trs *= m_Root;*/
 	return result;
 }
 
 bool Katamari::Update()
 {
 
-	//Gameobject::m_Transform->trs = XMMatrixRotationX(rotation);
 	return false;
 }
 
 void Katamari::Translate(Vector3 v3)
 {
 	v3 *= speed;
-	static Matrix rotation;
- 	rotation *=  XMMatrixRotationZ(-v3.x) * XMMatrixRotationX(v3.z);
+ 	m_Rotation *=  XMMatrixRotationZ(-v3.x) * XMMatrixRotationX(v3.z);
 
 	//todo clamp dia movement
-	m_Root *= XMMatrixTranslation(v3.x, 0.0f, v3.z);
-	m_Transform->trs =  rotation * m_Root;
+	m_Translation *= XMMatrixTranslation(v3.x, 0.0f, v3.z);
+	m_Transform->trs = m_Rotation * m_Translation;
 }

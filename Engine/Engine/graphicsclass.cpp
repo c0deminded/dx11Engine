@@ -117,15 +117,21 @@ bool GraphicsClass::Frame(int axisL, int axisR)
 	return true;
 }
 
+void GraphicsClass::RenderPass(Gameobject* go,ModelClass* renderable)
+{
+	m_ModelsPool.push_back(renderable);
+	m_GameobjsPool.push_back(go);
+}
 
-bool GraphicsClass::Render(Gameobject* go,ModelClass* model)
+
+bool GraphicsClass::Render()
 {
 	XMMATRIX viewMatrix, projectionMatrix, worldMatrix;
-	bool result;
+	bool result = false;
 
 
 	// Clear the buffers to begin the scene.
-	m_D3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
+	m_D3D->BeginScene(.5f, .5f, .5f, 1.0f);
 
 	// Generate the view matrix based on the camera's position.
 	m_Camera->Render();
@@ -135,16 +141,17 @@ bool GraphicsClass::Render(Gameobject* go,ModelClass* model)
 	m_D3D->GetWorldMatrix(worldMatrix);
 	m_D3D->GetProjectionMatrix(projectionMatrix);
 
-	// Rotate the world matrix by the rotation value so that the triangle will spin.
-	worldMatrix = go->m_Transform->trs;
+	for (UINT i = 0; i < m_ModelsPool.size(); i++)
+	{
+		worldMatrix = m_GameobjsPool[i]->m_Transform->trs;
 
-	// Put the model vertex and index buffers on the graphics pipeline to prepare them for drawing.
-	model->Render(m_D3D->GetDeviceContext());
-	// Render the model using the light shader.
-	result = m_LightShader->Render(m_D3D->GetDeviceContext(), model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
-		model->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+		m_ModelsPool[i]->Render(m_D3D->GetDeviceContext());
 
-	
+		// Render the model using the light shader.
+		result = m_LightShader->Render(m_D3D->GetDeviceContext(), m_ModelsPool[i]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix,
+			m_ModelsPool[i]->GetTexture(), m_Light->GetDirection(), m_Light->GetDiffuseColor());
+	}
+
 	if (!result)
 	{
 		return false;

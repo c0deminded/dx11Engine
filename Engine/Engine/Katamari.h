@@ -13,7 +13,7 @@ public:
 	void  Unload() override;
 	bool Init(HWND, D3DClass*) override;
 	bool  Update() override;
-	//custon
+	//custom
 	void Translate(Vector3);
 
 	ModelClass* m_Model;

@@ -3,6 +3,7 @@
 
 #include "graphicsclass.h"
 #include "Katamari.h"
+#include "KataVictim.h"
 #include <d3d11.h>
 #include <DirectXMath.h>
 
@@ -22,6 +23,8 @@ public:
 
 private:
 	GraphicsClass* m_Graphics;
-	Katamari* m_Katamari;
+	Katamari* m_Katamari;	
+	KataVictim* m_Katavictim;
+	KataVictim* m_Katavictim2;
 };
 #endif
