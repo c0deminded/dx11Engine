@@ -4,6 +4,7 @@
 #include "graphicsclass.h"
 #include "Katamari.h"
 #include "KataVictim.h"
+#include "Gameplane.h"
 #include <d3d11.h>
 #include <DirectXMath.h>
 
@@ -22,7 +23,10 @@ public:
 	virtual void  Render();
 
 private:
+	
+	CameraClass* m_Camera;
 	GraphicsClass* m_Graphics;
+	Gameplane* m_Gameplane;	
 	Katamari* m_Katamari;	
 	KataVictim* m_Katavictim;
 	KataVictim* m_Katavictim2;

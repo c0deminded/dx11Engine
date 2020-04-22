@@ -1,12 +1,4 @@
-﻿  Gameobject.cpp
-  KataVictim.cpp
-  Katamari.cpp
-  Scene.cpp
-D:\projects\dx11Engine\Engine\Engine\Scene.cpp(72,46): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-D:\projects\dx11Engine\Engine\Engine\Scene.cpp(72,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-  graphicsclass.cpp
-  main.cpp
-  systemclass.cpp
-  Создание кода...
-D:\projects\dx11Engine\Engine\Engine\systemclass.cpp(152): warning C4715: SystemClass::Frame: значение возвращается не при всех путях выполнения
+﻿  Scene.cpp
+D:\projects\dx11Engine\Engine\Engine\Scene.cpp(105,46): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+D:\projects\dx11Engine\Engine\Engine\Scene.cpp(105,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
   Engine.vcxproj -> D:\projects\dx11Engine\Engine\x64\Debug\Engine.exe

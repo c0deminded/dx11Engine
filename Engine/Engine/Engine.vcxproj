@@ -150,6 +150,7 @@
     <ClCompile Include="lightshaderclass.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="modelclass.cpp" />
+    <ClCompile Include="Gameplane.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="systemclass.cpp" />
     <ClCompile Include="textureclass.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="colorshaderclass.h" />
     <ClInclude Include="d3dclass.h" />
     <ClInclude Include="Gameobject.h" />
+    <ClInclude Include="Gameplane.h" />
     <ClInclude Include="graphicsclass.h" />
     <ClInclude Include="inputclass.h" />
     <ClInclude Include="Katamari.h" />

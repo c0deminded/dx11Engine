@@ -26,14 +26,13 @@ public:
 	bool Initialize(int, int, HWND);
 	void Shutdown();
 	bool Frame(int,int);
-	bool Render();
-	void RenderPass(Gameobject*,ModelClass*);
+	bool Render(CameraClass*);
+	void SetRenderable(Gameobject*,ModelClass*);
 
 	D3DClass* m_D3D;
 	std::vector<Gameobject*> m_GameobjsPool;
 	std::vector<ModelClass*> m_ModelsPool;
 private:
-	CameraClass* m_Camera;
 	LightShaderClass* m_LightShader;
 	LightClass* m_Light;
 };

@@ -93,6 +93,9 @@
     <ClCompile Include="Katamari.cpp">
       <Filter>Исходные файлы\Engine\Katamari</Filter>
     </ClCompile>
+    <ClCompile Include="Gameplane.cpp">
+      <Filter>Исходные файлы\Engine\Katamari</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="d3dclass.h">
@@ -141,6 +144,9 @@
       <Filter>Файлы заголовков\Engine\Katamari</Filter>
     </ClInclude>
     <ClInclude Include="KataVictim.h">
+      <Filter>Файлы заголовков\Engine\Katamari</Filter>
+    </ClInclude>
+    <ClInclude Include="Gameplane.h">
       <Filter>Файлы заголовков\Engine\Katamari</Filter>
     </ClInclude>
   </ItemGroup>

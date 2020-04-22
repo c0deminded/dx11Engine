@@ -45,7 +45,7 @@ bool KataVictim::Init(HWND hwnd, D3DClass* d3d)
 		return false;
 	}
 	// Initialize the model.
-	result = m_Model->Initialize(Gameobject::m_D3D->GetDevice(), "Data\\Objects\\m_cube.obj", L"../Engine/baseColor.tga");
+	result = m_Model->Initialize(Gameobject::m_D3D->GetDevice(), "Data\\Objects\\m_cube.obj", L"../Engine/moonmap.tga");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize model.", L"Error", MB_OK);

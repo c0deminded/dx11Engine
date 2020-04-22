@@ -79,9 +79,10 @@ bool ModelClass::LoadModel(std::string path)
 {
 		
 	Assimp::Importer importer;
+	importer.FreeScene();
 	const aiScene* scene = importer.ReadFile(path,
 		aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
-
+	
 	if (scene == nullptr)
 		return false;
 		
@@ -276,6 +277,6 @@ void ModelClass::RenderBuffers(ID3D11DeviceContext* ddeviceContext)
 	// Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
 	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// Render the triangle.
-	deviceContext->DrawIndexed(m_indexCount, 0, 0);
+	//deviceContext->DrawIndexed(m_indexCount, 0, 0);
 	return;
 }

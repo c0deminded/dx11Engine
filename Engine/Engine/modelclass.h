@@ -30,7 +30,6 @@ public:
 	ModelClass();
 	ModelClass(const ModelClass&);
 	~ModelClass();
-	//bool Initialize(ID3D11Device*, LPCWSTR textureFilename);
 	bool Initialize(ID3D11Device*, std::string,LPCWSTR);
 	void Shutdown();
 	void Frame();
