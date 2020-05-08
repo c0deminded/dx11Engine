@@ -24,6 +24,9 @@ cbuffer LightBuffer
 {
 	float4 ambientColor;
 	float4 diffuseColor;
+    float4 specularColor;
+	float specularPower;
+	float3 bufferPadding;
 };
 
 
@@ -37,6 +40,7 @@ struct PixelInputType
 	float3 normal : NORMAL;
     float4 lightViewPosition : TEXCOORD1;
 	float3 lightPos : TEXCOORD2;
+	float3 viewDirection : TEXCOORD3;
 };
 
 
@@ -52,13 +56,17 @@ float4 ShadowPixelShader(PixelInputType input) : SV_TARGET
 	float lightDepthValue;
     float lightIntensity;
 	float4 textureColor;
-
+	float3 reflection;
+    float4 specular;
 
 	// Set the bias value for fixing the floating point precision issues.
 	bias = 0.001f;
 
 	// Set the default output color to the ambient light value for all pixels.
     color = ambientColor;
+
+	// Initialize the specular color.
+    specular = specularColor;
 
 	// Calculate the projected texture coordinates.
 	projectTexCoord.x =  input.lightViewPosition.x / input.lightViewPosition.w / 2.0f + 0.5f;
@@ -81,7 +89,7 @@ float4 ShadowPixelShader(PixelInputType input) : SV_TARGET
 		if(lightDepthValue < depthValue)
 		{
 		    // Calculate the amount of light on this pixel.
-			lightIntensity = saturate(dot(input.normal, input.lightPos));
+			lightIntensity = saturate(dot(input.normal, -input.lightViewPosition));
 
 		    if(lightIntensity > 0.0f)
 			{
@@ -90,6 +98,13 @@ float4 ShadowPixelShader(PixelInputType input) : SV_TARGET
 
 				// Saturate the final light color.
 				color = saturate(color);
+
+				// Calculate the reflection vector based on the light intensity, normal vector, and light direction.
+				//reflection = normalize(2 * lightIntensity * (input.normal - input.lightViewPosition)); 
+				 reflection = normalize(2 * lightIntensity * input.normal); 
+
+				// Determine the amount of specular light based on the reflection vector, viewing direction, and specular power.
+				specular = pow(saturate(dot(reflection, input.viewDirection)), specularPower);
 			}
 		}
 	}
@@ -99,6 +114,9 @@ float4 ShadowPixelShader(PixelInputType input) : SV_TARGET
 
 	// Combine the light and texture color.
 	color = color * textureColor;
+
+	// Add the specular component last to the output color.
+    color = saturate(color + specular);
 
     return color;
 }

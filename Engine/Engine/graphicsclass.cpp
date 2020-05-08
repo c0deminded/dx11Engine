@@ -216,7 +216,7 @@ bool GraphicsClass::Render(CameraClass* m_Camera, LightClass* m_Light)
 		// Render models using the ambient light shader.
 		result = m_ShadowShader->Render(m_D3D->GetDeviceContext(), m_ModelsPool[i]->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, lightViewMatrix,
 			lightProjectionMatrix, m_ModelsPool[i]->GetTexture(), m_RenderTexture->GetShaderResourceView(), m_Light->GetPosition(),
-			m_Light->GetAmbientColor(), m_Light->GetDiffuseColor());
+			m_Light->GetAmbientColor(), m_Light->GetDiffuseColor(),m_Camera->GetPosition(),m_Light->GetSpecularColor(),m_Light->GetSpecularPower());
 		if (!result)
 		{
 			return false;

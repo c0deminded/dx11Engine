@@ -100,7 +100,9 @@ bool Scene::Init(int sWidth, int sHeight, HWND hwnd)
 	// Initialize the light object.
 	m_Light->SetAmbientColor(0.25f, 0.25f, 0.25f, 1.0f);
 	m_Light->SetDiffuseColor(1.0f, 1.0f, 1.0f, 1.0f);
-	m_Light->SetLookAt(0.0f, 1.0f, 1.0f);
+	m_Light->SetSpecularColor(0.0f, 0.0f, 0.0f, 0.5f);
+	m_Light->SetSpecularPower(32.0f);
+	m_Light->SetLookAt(0.0f, 7.0f, -7.0f);
 	m_Light->GenerateProjectionMatrix(SCREEN_DEPTH, SCREEN_NEAR);
 
 	m_Katamari = new Katamari;
@@ -109,17 +111,17 @@ bool Scene::Init(int sWidth, int sHeight, HWND hwnd)
 
 	m_Katavictim = new KataVictim;
 	result = m_Katavictim->Init(hwnd, "Data\\Objects\\Item Bag.obj", L"../Engine/moneybag.tga", Vector3(1.75f, 1.75f, 1.75f), m_Graphics->m_D3D);
-	m_Katavictim->Place(Vector3(4.0f, -0.35f, 0.0f));
+	m_Katavictim->Place(Vector3(4.0f, 0.0f, 0.0f));
 	m_Graphics->SetRenderable((Gameobject*)m_Katavictim, m_Katavictim->m_Model);
 
 	m_Katavictim2 = new KataVictim;
 	result = m_Katavictim2->Init(hwnd, "Data\\Objects\\hammer.obj", L"../Engine/hammer.tga", Vector3(0.25f, 0.25f, 0.25f), m_Graphics->m_D3D);
-	m_Katavictim2->Place(Vector3(-4.0f, -0.7f, 3.0f));
+	m_Katavictim2->Place(Vector3(-4.0f, 0.0f, 3.0f));
 	m_Graphics->SetRenderable((Gameobject*)m_Katavictim2, m_Katavictim2->m_Model);
 
 	m_Katavictim3 = new KataVictim;
 	result = m_Katavictim3->Init(hwnd, "Data\\Objects\\Teapot.obj", L"../Engine/teapot.tga", Vector3(7.0f, 7.0f, 7.0f), m_Graphics->m_D3D);
-	m_Katavictim3->Place(Vector3(-1.0f, -0.10f, 0.0f));
+	m_Katavictim3->Place(Vector3(-1.0f, 0.0f, 0.0f));
 	m_Graphics->SetRenderable((Gameobject*)m_Katavictim3, m_Katavictim3->m_Model);
 
 	m_Gameplane = new Gameplane;
@@ -133,7 +135,7 @@ bool Scene::Update(int axisX,int axisY)
 {
 	//todo: move to katamari update
 	if (axisX != 0 || axisY != 0) {
-		m_Katamari->Translate(Vector3(axisX, -2.0f, axisY));
+		m_Katamari->Translate(Vector3(axisX, 0.0f, axisY));
 		m_Camera->Follow(m_Katamari->m_Transform->trs,Vector3(0.0f, 9.0f,-25.0f));
 		if (m_Katavictim->m_HasParent)
 			m_Katavictim->Update(m_Katamari);
@@ -161,18 +163,18 @@ bool Scene::Update(int axisX,int axisY)
 	}
 
 	// this what makes light rotate around area
-	static float lightPositionX = -36.0f;
+	static float lightPositionX = -20.0f;
 
-	// Update the position of the light each frame.
+	//// Update the position of the light each frame.
 	lightPositionX += 0.05f;
-	if (lightPositionX > 36.0f)
+	if (lightPositionX > 20.0f)
 	{
-		lightPositionX = -36.0f;
+		lightPositionX = -26.0f;
 	}
 	///////////////////////////////////////////
 
 	// Update the position of the light.
-	m_Light->SetPosition(lightPositionX, 10.0f, -15.0f);
+	m_Light->SetPosition(lightPositionX, 15.0f, -25.0f);
 
 	m_Graphics->Render(m_Camera, m_Light);
 

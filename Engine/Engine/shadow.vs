@@ -15,6 +15,11 @@ cbuffer MatrixBuffer
 	matrix lightProjectionMatrix;
 };
 
+cbuffer CameraBuffer
+{
+    float3 cameraPosition;
+    float cameraPadding;
+};
 
 //////////////////////
 // CONSTANT BUFFERS //
@@ -22,7 +27,7 @@ cbuffer MatrixBuffer
 cbuffer LightBuffer2
 {
     float3 lightPosition;
-	float padding;
+	float lightPadding;
 };
 
 
@@ -43,6 +48,7 @@ struct PixelInputType
 	float3 normal : NORMAL;
     float4 lightViewPosition : TEXCOORD1;
 	float3 lightPos : TEXCOORD2;
+	float3 viewDirection : TEXCOORD3;
 };
 
 
@@ -85,6 +91,12 @@ PixelInputType ShadowVertexShader(VertexInputType input)
 
     // Normalize the light position vector.
     output.lightPos = normalize(output.lightPos);
+
+     // Determine the viewing direction based on the position of the camera and the position of the vertex in the world.
+    output.viewDirection = cameraPosition.xyz - worldPosition.xyz;
+	
+    // Normalize the viewing direction vector.
+    output.viewDirection = normalize(output.viewDirection);
 
 	return output;
 }
