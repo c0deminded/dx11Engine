@@ -43,7 +43,7 @@ bool Gameplane::Init(HWND hwnd, D3DClass* d3d)
 		return false;
 	}
 	// Initialize the model.
-	result = m_Model->Initialize(Gameobject::m_D3D->GetDevice(), "Data\\Objects\\m_plane.obj", L"../Engine/brick.tga");
+	result = m_Model->Initialize(Gameobject::m_D3D->GetDevice(), "Data\\Objects\\m_plane.obj", L"../Engine/green.tga");
 	if (!result)
 	{
 		MessageBox(hwnd, L"Could not initialize model.", L"Error", MB_OK);

@@ -110,18 +110,18 @@ bool Scene::Init(int sWidth, int sHeight, HWND hwnd)
 	m_Graphics->SetRenderable((Gameobject*)m_Katamari, m_Katamari->m_Model);
 
 	m_Katavictim = new KataVictim;
-	result = m_Katavictim->Init(hwnd, "Data\\Objects\\Item Bag.obj", L"../Engine/moneybag.tga", Vector3(1.75f, 1.75f, 1.75f), m_Graphics->m_D3D);
-	m_Katavictim->Place(Vector3(4.0f, 0.0f, 0.0f));
+	result = m_Katavictim->Init(hwnd, "Data\\Objects\\gus.obj", L"../Engine/gus.tga", Vector3(0.05f, 0.05f, 0.05f), m_Graphics->m_D3D);
+	m_Katavictim->Place(Vector3(150.0f, -10.0f, 0.0f));
 	m_Graphics->SetRenderable((Gameobject*)m_Katavictim, m_Katavictim->m_Model);
 
 	m_Katavictim2 = new KataVictim;
-	result = m_Katavictim2->Init(hwnd, "Data\\Objects\\hammer.obj", L"../Engine/hammer.tga", Vector3(0.25f, 0.25f, 0.25f), m_Graphics->m_D3D);
-	m_Katavictim2->Place(Vector3(-4.0f, 0.0f, 3.0f));
+	result = m_Katavictim2->Init(hwnd, "Data\\Objects\\peng.obj", L"../Engine/peng.tga", Vector3(2.25f, 2.25f, 2.25f), m_Graphics->m_D3D);
+	m_Katavictim2->Place(Vector3(-1.0f, -0.4f, 3.0f));
 	m_Graphics->SetRenderable((Gameobject*)m_Katavictim2, m_Katavictim2->m_Model);
 
 	m_Katavictim3 = new KataVictim;
-	result = m_Katavictim3->Init(hwnd, "Data\\Objects\\Teapot.obj", L"../Engine/teapot.tga", Vector3(7.0f, 7.0f, 7.0f), m_Graphics->m_D3D);
-	m_Katavictim3->Place(Vector3(-1.0f, 0.0f, 0.0f));
+	result = m_Katavictim3->Init(hwnd, "Data\\Objects\\hand.obj", L"../Engine/teapot.tga", Vector3(0.1f, 0.1f, 0.1f), m_Graphics->m_D3D);
+	m_Katavictim3->Place(Vector3(-100.0f, 0.0f, 0.0f));
 	m_Graphics->SetRenderable((Gameobject*)m_Katavictim3, m_Katavictim3->m_Model);
 
 	m_Gameplane = new Gameplane;
@@ -174,7 +174,7 @@ bool Scene::Update(int axisX,int axisY)
 	///////////////////////////////////////////
 
 	// Update the position of the light.
-	m_Light->SetPosition(lightPositionX, 15.0f, -25.0f);
+	m_Light->SetPosition(lightPositionX, 15.0f, -30.0f);
 
 	m_Graphics->Render(m_Camera, m_Light);
 

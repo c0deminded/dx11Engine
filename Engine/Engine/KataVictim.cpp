@@ -91,11 +91,12 @@ bool KataVictim::Update(Katamari* k)
 void KataVictim::AttachTo(Gameobject* go)
 {
 	m_HasParent = true;
-	m_ParentTRS = go->m_Transform->trs;
+	m_ParentTRS = go->m_Transform->trs.Invert();
 
-	Vector3 d = Distance(go);
-
-	m_Translation = XMMatrixTranslation(d.x,0.0f, d.z);
+	Vector3 t = Vector3(m_Translation._41, m_Translation._42, m_Translation._43);
+	Vector3 s = Vector3(m_Scale._11, m_Scale._22, m_Scale._33);
+	
+	m_Translation = XMMatrixTranslation(t.x*s.x,t.y*s.y,t.z*s.z);
 }
 
 void KataVictim::Place(Vector3 pos)

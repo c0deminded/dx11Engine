@@ -37,11 +37,11 @@ private:
 
 	struct LightBufferType
 	{
-		XMFLOAT4 ambientColor;
-		XMFLOAT4 diffuseColor;
-		XMFLOAT4 specularColor;
-		float specularPower;
-		XMFLOAT3 bufferPadding;
+		XMFLOAT4 ambientColor; //16
+		XMFLOAT4 diffuseColor; //16
+		XMFLOAT4 specularColor; //16
+		float specularPower; //4
+		XMFLOAT3 bufferPadding;//12
 	};
 
 	struct LightBufferType2
