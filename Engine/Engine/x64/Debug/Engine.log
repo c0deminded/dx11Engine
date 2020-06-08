@@ -1,4 +1,28 @@
-﻿  Scene.cpp
+﻿  cameraclass.cpp
+  colorshaderclass.cpp
+D:\projects\dx11Engine\Engine\Engine\colorshaderclass.cpp(234,42): warning C4244: =: преобразование "SIZE_T" в "unsigned long", возможна потеря данных
+  d3dclass.cpp
+D:\projects\dx11Engine\Engine\Engine\d3dclass.cpp(32,52): warning C4101: stringLength: неиспользованная локальная переменная
+  Gameobject.cpp
+  graphicsclass.cpp
+  inputclass.cpp
+  Katamari.cpp
+  KataVictim.cpp
+  lightclass.cpp
+  lightshaderclass.cpp
+D:\projects\dx11Engine\Engine\Engine\lightshaderclass.cpp(299,42): warning C4244: =: преобразование "SIZE_T" в "unsigned long", возможна потеря данных
+  main.cpp
+  modelclass.cpp
+D:\projects\dx11Engine\Engine\Engine\modelclass.cpp(124,34): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+D:\projects\dx11Engine\Engine\Engine\modelclass.cpp(126,22): warning C4018: <: несоответствие типов со знаком и без знака
+  Gameplane.cpp
+  Scene.cpp
 D:\projects\dx11Engine\Engine\Engine\Scene.cpp(105,46): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
 D:\projects\dx11Engine\Engine\Engine\Scene.cpp(105,33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  systemclass.cpp
+  textureclass.cpp
+  textureshaderclass.cpp
+D:\projects\dx11Engine\Engine\Engine\textureshaderclass.cpp(259,42): warning C4244: =: преобразование "SIZE_T" в "unsigned long", возможна потеря данных
+  Создание кода...
+D:\projects\dx11Engine\Engine\Engine\systemclass.cpp(152): warning C4715: SystemClass::Frame: значение возвращается не при всех путях выполнения
   Engine.vcxproj -> D:\projects\dx11Engine\Engine\x64\Debug\Engine.exe
